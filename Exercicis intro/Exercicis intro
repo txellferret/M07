@@ -1,0 +1,20 @@
+Exercicis d'introducció a PHP
+
+1. Programa que mostra totes les taules de multiplicar (de l'1 al 9).
+2. Programa que calcula l'índex de massa corporal a partir del pes (kg.) i l'alçada (m).
+3. Programa que calcula el canvi d'unitats entre graus celsius i graus Fahrenheit.
+4. Programa que indica amb un missatge si s'està en edat laboral, edat d'estudiar o en edat de jubilació, a partir del valor d'una variable que indica l'edat d'una persona.
+5. Programa que determina si un any és o no de traspàs.
+6. Programa que calcula l'edat d'una persona (en anys, mesos i dies) a partir de la data de naixement.
+7. Programa que mostra en format de taula amb dues columnes n, x els valors de la sèrie de Fibonacci fins a un índex n especificat en una variable inicialment.
+8. Programa que, donat un array amb una llista de paraules, dóna la posició en què es troba una paraula donada o indica, si és el cas, que no hi és.
+9. Programa que, donat un array amb una llista de nombres, calcula els següents paràmetres estadístics: mitjana, mediana, mínim, màxim.
+10. Programa que compara dues seqüències i informa del nombre de posicions no coincidents.
+11. Programa que calcula la seqüència complementària a una donada.
+12. Programa que validi una seqüència de ADN o ARNm (seleccionar amb un selector) indiqui el nombre de vegades i el percentatge que apareix cada nucleòtid i el nombre d'errors.
+13. Programa que donada la seqüència d'aminoàcids d'una proteïna, mostra una seqüència de nucleòtids que la codifiqui.
+14. Programa que donada una seqüència de nucleòtids, indiqui la seqüència d'aminoàcids en què s'expressa (amb lletra i nom).
+15. Programa que recompta el nombre de vegades que apareix un nucleòtid en una seqüència i recompta també el total de valors no vàlids. Utilitza una funció per fer el recompte, la qual retorna els resultat en un array associatiu. letter-counter
+16. Programa que a partir d'una seqüència de ADN codificada de 5' a 3' calcula la seqüència de ARN i viceversa (ADNc). Utilitzar un selector per escollir el tipus de seqüència i mostreu els errors usant variables de sessió.
+
+
