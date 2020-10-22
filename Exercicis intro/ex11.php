@@ -1,9 +1,8 @@
 <?php
 //Programa que calcula la seqüència complementària a una donada.
 
-define("DNACHARS", ["A", "T", "G", "C"]);
-define("RNACHARS", array("A", "U", "G", "C"));
 
+include "fn-sequences.php";
 $errors ="";
 
 if (!is_null(filter_input(INPUT_GET,'calculate'))) { //if button is clicked
@@ -23,7 +22,11 @@ if (!is_null(filter_input(INPUT_GET,'calculate'))) { //if button is clicked
     }
 }
 
-
+/**
+ * Gets the complementary sequence of nucleotids
+ * @param sequence of nucleotids
+ * @param type if it is DNA or RNA
+ */
 function complementarySequence(string $x, string $type) {
     $finalSeq = " ";
     for($i=0;$i<strlen($x);$i++) {
@@ -51,22 +54,7 @@ function complementarySequence(string $x, string $type) {
     return $finalSeq;
 }
 
-/**
- * Validates a sequences
- * @param seq to validate
- * @param validCahrs acceptable chars on the sequence
- * @return true if sequence is valid, false otherwise
- */
-function checkValidSequence (string $seq, array $validChars) : bool {
-    $valid = true; 
-    for ($i=0; $i<strlen($seq); $i++) {
-        if (!in_array(strtoupper($seq[$i]), $validChars)) {
-            $valid = false; 
-            break;
-        }  
-    }
-    return $valid;
-}
+
 ?>
 
 <!DOCTYPE html>

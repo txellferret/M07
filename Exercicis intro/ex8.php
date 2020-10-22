@@ -4,17 +4,18 @@
 
 
 $list = array();
+$listPrint ="";
 
 if (!is_null(filter_input(INPUT_GET, 'add'))) {
     //data input
     echo var_dump($_GET);
-    $word = filter_input(INPUT_GET, "word");
+    $word = (string) filter_input(INPUT_GET, "word");
     echo var_dump($word);
-    $listPrint = filter_input(INPUT_GET, "listPrint");
+    $listPrint = filter_input(INPUT_GET, "listPrint", FILTER_SANITIZE_STRING);
     echo var_dump($listPrint);
     if ($word != "") {
         echo var_dump($listPrint);
-        if (strcmp($listPrint, " ") == "0") {
+        if (strcmp($listPrint, " ") == 0) {
             echo "buy";
             $list = array();
         } else {
