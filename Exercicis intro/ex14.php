@@ -3,6 +3,7 @@
 //indiqui la seqüència d'aminoàcids en què s'expressa (amb lletra i nom).
 
 include "fn-sequences.php";
+
 $divStyleAA='none'; // hide div
 
 $errors = "0";
@@ -10,6 +11,7 @@ $errors = "0";
 /**Main */
 if (!is_null(filter_input(INPUT_GET,'analize'))) { //if button is clicked
     $inputSeq = strtoupper(filter_input(INPUT_GET, "seq"));
+    
     if (checkValidSequence($inputSeq, RNACHARS)) {
         $arrayCodons = splitsSeqRNA ($inputSeq,3);
         $AA = convertToAA ($arrayCodons);

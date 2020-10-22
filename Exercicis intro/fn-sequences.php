@@ -1,4 +1,5 @@
 <?php
+
 define("DNACHARS", array("A", "T", "G", "C"));
 define("RNACHARS", array("A", "U", "G", "C"));
 define("AA", array("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V")); 
@@ -22,6 +23,7 @@ $nucleotidsAA = array ("UUU" => "F","UUC" => "F","UUA" => "L", "UUG" => "L", "UC
 "AUU" => "I", "AUC" => "I", "AUA" => "I", "AUG" => "M", "AC" => "T", "AAU" => "N", "AAC" => "N", "AAA" => "K","AAG" => "K", 
 "AGU" => "S", "AGC" => "S", "AGA" => "R", "AGG" => "R", "GU*" => "V","GC*" => "A", "GAU" => "D","GAC" => "D",
 "GAA" => "E","GAG" => "E", "GG*" => "G");
+
 
 /**
  * Validates a sequences
@@ -115,3 +117,4 @@ function convertToNucleotids (array $seq) :string {
     }
     return $chainNucleotids;
 }
+
