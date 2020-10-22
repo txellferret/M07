@@ -2,7 +2,7 @@
 //Programa que donada una seqüència de nucleòtids, 
 //indiqui la seqüència d'aminoàcids en què s'expressa (amb lletra i nom).
 
-
+include 'fn-sequences.php';
 $divStyleAA='none'; // hide div
 define("RNACHARS", array("A", "U", "G", "C"));
 $errors = "0";
@@ -23,6 +23,7 @@ $nucleotidsAA = array ("UUU" => "F","UUC" => "F","UUA" => "L", "UUG" => "L", "UC
 
 if (!is_null(filter_input(INPUT_GET,'analize'))) { //if button is clicked
     $inputSeq = strtoupper(filter_input(INPUT_GET, "seq"));
+    
     if (checkValidSequence($inputSeq, RNACHARS)) {
         $arrayCodons = splitsSeqRNA ($inputSeq,3);
         $AA = convertToAA ($arrayCodons);
@@ -55,22 +56,6 @@ function convertNameAA (string $aminoacids) :string{
     return $chainAAname;
 }
 
-/**
- * Validates a sequences
- * @param seq to validate
- * @param validCahrs acceptable chars on the sequence
- * @return true if sequence is valid, false otherwise
- */
-function checkValidSequence (string $seq, array $validChars) : bool {
-    $valid = true; 
-    for ($i=0; $i<strlen($seq); $i++) {
-        if (!in_array(strtoupper($seq[$i]), $validChars)) {
-            $valid = false; 
-            break;
-        }  
-    }
-    return $valid;
-}
 /**
  * Converts a given array of nucleotids to their correspondig AAs
  * @param array of codons

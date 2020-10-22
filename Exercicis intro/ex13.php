@@ -2,6 +2,7 @@
 //Programa que donada la seqüència d'aminoàcids d'una proteïna, 
 //mostra una seqüència de nucleòtids que la codifiqui.
 
+include 'fn-sequences.php';
 $divStyleRNA='none'; // hide div
 
 define("AA", array("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V")); 
