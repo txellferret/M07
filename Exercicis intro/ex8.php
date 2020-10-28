@@ -11,7 +11,7 @@ if (!is_null(filter_input(INPUT_GET, 'add'))) {
     echo var_dump($_GET);
     $word = (string) filter_input(INPUT_GET, "word");
     echo var_dump($word);
-    $listPrint = filter_input(INPUT_GET, "listPrint", FILTER_SANITIZE_STRING);
+    $listPrint = filter_input(INPUT_GET, "listPrint");
     echo var_dump($listPrint);
     if ($word != "") {
         echo var_dump($listPrint);
@@ -21,10 +21,13 @@ if (!is_null(filter_input(INPUT_GET, 'add'))) {
         } else {
             $list = parseWordList($listPrint);
         }
-    
+        echo $word;
         array_push($list, $word);
         print_r($list);
+        echo var_dump($list[0]);
+        echo "<br>";
         $listPrint = printWordList ($list);
+        echo strlen($listPrint); 
     } else $message = "Word not introduced";
     
 
@@ -35,6 +38,7 @@ if (!is_null(filter_input(INPUT_GET, 'find'))) {
     $listPrint = filter_input(INPUT_GET, "listPrint");
     echo $listPrint;
     $wordToFind = (string) filter_input(INPUT_GET, "wordToFind");
+
     echo $wordToFind ;
     
     $list = parseWordList($listPrint);

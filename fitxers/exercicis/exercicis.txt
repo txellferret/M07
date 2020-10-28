@@ -1,0 +1,5 @@
+1. Programa que valida nom d'usuari i paraula de pas. Les dades estan en un fitxer.
+2. Programa que obre un fitxer amb text(seleccionat per l'usuari d'entre els disponibles) i indica en una taula el nombre de paraules que comencen per cada lletra.
+3. Programa que permet pujar fitxers amb texts, així com seleccionar-ne un dels pujats i mostrar el seu contingut en un texarea (tot en la mateixa pàgina).
+4. Es desa en fitxer informació sobre paísos (nom, capital, extensió, població, etc). Amb un selector se selecciona un país i es mostra la seva informació en un formulari. El formulari permetrà enviar canvis en les dades i desar-les al fitxer.
+
