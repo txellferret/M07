@@ -1,0 +1,106 @@
+M07
+
+22/09
+https es el protocol d'intercanvi de informació, HTTPS vol dir que es segur. La infomració va xifrada. 
+http no es segur. La informació va amb text pla.
+
+Nom complert de domini (Full qualified domain name): www.proven.cat. Especifica univocamnet el servidor. DNS
+.cat: domini arrel.
+:80 es el port de comunicació determinat, per defecte es el 80.
+/intraweb/index.php: aixo es el recurs. 
+
+El client va una petició get al servidor, es un mode de petició per obtenir un recurs.
+Però no li dona el fitxer php, sino el resultat de la seva executació, el server executa la pagina php i el resultat es el que li dona el server al client.
+Al final el resultat li envia el client. Es html, javascript, que es el que enten el navegador.
+Resposta 200 OK
+         404 not found
+
+Les cookies viatgen al header de la peticio.
+
+
+Servidor web: volem un servidor local com a servidor de desenvolupament, per fer proves.
+Apache2.
+Apache te el seu propi usuari, i no podra escriure a la carpeta publictarda. 
+var/www on es pengen les pag web per publicar.
+
+http://localhost/~tarda/index.html
+
+tarda@tarda:~/public_html$ php index.php
+
+PHP no es un llenguatge compilat.
+No es declara el tipus de les variables.
+
+
+25/09
+si el doc es nomes de php, l'etiqueta de tancament no es posa.
+$x=== $y mira si el valor i el tipus son igual: exemple:
+$x=5;
+$y= "5"; 
+tenen el mateix valor pero diferent tipus.
+
+include i require serveixen per incloure fitxers php a un altre.
+
+2 funcions per imprimir a la pantalla:
+- echo "Hola";
+- print ("Hola");
+
+
+empty vs isset, hi ha petites diferencies
+isset comprova si la variable esta creada
+unset destrueix una variable de la memoria.
+
+29/09
+Les constants no tenen $, es defineixen
+Les cometes simples mantenen el text i no tradueixen les var en el seu valor. Les dobles si que el tradueixen
+
+heredoc:contrueix un string <<< EOT
+                           EOT;
+es com posarho tot amb una linia, pero visualment surt amb els canvis de linia correctes.
+nowdoc equivalent pero tanca amb comentes simples. 
+Es util quan volem escriure un codi HTML llarg.
+
+Funcio explode: per contar paraules per exemple delimitades per un delimitador.
+
+Funcions multibyte serveixen per treballar amb UTF8.
+Al header diem si volem que treballem amb UTF8
+
+VARIABLES SUPERGLOBALS
+son variables de varis scripts php.
+$_SERVER: informacio de la conecció al servidor
+$_GET
+$_POST
+
+
+
+A partir de php 7, a una funcio li podem dir de quin tipus es el parametre. 
+
+03/11/20
+Com que cada peticio cap al servidor es independent de una altra, ja que diversos PC poden fer moltes peticions a la vegada, ens cal una manera d'identificar el client.
+
+COOKIE
+Informacio en format text que el servidor envia al client i el client ho guarda a la memoria del navegador.
+Quan el client torna a enviar la peticio, a la capcelera posa la cookie. Es una manera didentificar el client per part del servidor. 
+Hi ha un array associatiu per les cookies: $_COOKIES
+
+ Les cookies són parelles nom:valor que s'emmagatzemen a l'ordinador client i que viatgen a les capçaleres (headers) de les peticions http. Aquesta informació s'utilitza per a finalitats molt diverses, com ara autenticació, selecció de preferències, etc.).
+
+Normalment, és el servidor qui crea les cookies i les inclou a la capçalera de la resposta a una petició http. El navegador del client desa les cookies (nom i valor) així com la identificació del servidor que les ha enviades.
+
+PHP proporciona per a la creació de cookies la funció setcookie(). Al igual que la resta d'elements de l'encapçalament, les cookies s'han de crear abans de generar cap sortida, és a dir, abans d'escriure el contingut de la pàgina de resposta.  (abans de fer cap echo)
+
+Cada cookie va associada a un domini concret que es el que lha creat. (domini = pag web)
+
+Quan generem headers, ha de començar abans d'imprimir el resultat. Abans de la sortida, de contigut de la resposta
+En una peticio http hi ha el header i el body.
+
+Una cookie s'esborra fent que caduqui, i li posem un temps de vida anterior al actual.
+Cada vegada que refresquem la pag la data de caducitat es renova.
+La data de caducitat es obligatoria i es posa en segons. 
+
+Sessions
+Les sessions s'utilitzen per preservar dades entre successives peticions del mateix client. 
+Serveix per guardar dades del client pero al servidor.
+Cada sessió té associat un identificador únic i un espai de memòria per a emmagatzemar variables de sessió. Aquestes variables són accessibles en PHP amb l'array associatiu superglobal $_SESSION. 
+
+
+
