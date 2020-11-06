@@ -113,7 +113,7 @@ function showInfo (string $countryName) :array {
  */
 function editCountryOnGlobalArray (array $newLine) : bool {
     global $allDoc;
-    print_r ($allDoc); echo "<br>metode";
+    print_r ($allDoc); 
     $changed = false;
     if (!empty($newLine)) {
         for ($i=0; $i < count($allDoc); $i++) { 
