@@ -10,7 +10,7 @@
 </head>
 <body>
     Under construction
-    <?php echo "<p>[<a href='../index.php'>Index</a>]</p>"; ?>
+    <?php echo "<p>[<a href='index.php'>Index</a>]</p>"; ?>
 </body>
 </html>
 

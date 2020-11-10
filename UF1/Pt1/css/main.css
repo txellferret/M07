@@ -5,9 +5,9 @@
 }
 footer {
     position:fixed;
-    left:0px;
-    bottom:0px;
-    height:100px;
+    bottom:0;
+    height:70px;
     width:100%;
+    align-self: flex-end;
 }
 

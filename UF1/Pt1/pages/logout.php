@@ -13,11 +13,11 @@
             if (isset($_SESSION["userRole"])) {  //user valid
                 session_destroy();
                 echo "<p>Logout done.</p>";
-                header("Location:../index.php");  //redirect to application page              
+                header("Location:index.php");  //redirect to application page              
             }
             else {  //user not logged yet.
                 echo "<p>Not logged!</p>";
-                header("Location:../index.php");  //redirect to application page        
+                header("Location:index.php");  //redirect to application page        
             }
         ?>
 	</body>

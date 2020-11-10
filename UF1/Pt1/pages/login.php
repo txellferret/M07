@@ -4,6 +4,7 @@ session_start();
 $path = "../files/";
 $inputFile = "users.txt";
 
+$userWrong = "";
 $message = "";
 
 if (!is_null(filter_input(INPUT_POST,'submit'))) {
@@ -18,7 +19,7 @@ if (!is_null(filter_input(INPUT_POST,'submit'))) {
         //assess file existance
         if (!file_exists($path.$inputFile)) {
             echo "File not found";
-            header("Location:../index.php");  //redirect to application page
+            header("Location:index.php");  //redirect to application page
 
         }   
     
@@ -32,13 +33,14 @@ if (!is_null(filter_input(INPUT_POST,'submit'))) {
 
                     $_SESSION["userRole"] = $userPass[2];
                     $_SESSION["userName"] = $userPass[0];
-                        header("Location:../index.php");  //redirect to application page
+                        header("Location:index.php");  //redirect to application page
                         exit;
 
                 } else $message = "<b>Invalid password</b>";
     
             break;
             } else { //bad login: redirect to login page again.
+                $userWrong = $userInput;
                 $message = "<b>Invalid user</b>";
                 
             } 
@@ -58,7 +60,7 @@ if (!is_null(filter_input(INPUT_POST,'submit'))) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--css files -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/main.css">
+
 
     <title>Document</title>
 </head>
@@ -85,7 +87,7 @@ if (!is_null(filter_input(INPUT_POST,'submit'))) {
                     <fieldset>
                         <legend>Log in into the restaurant clients!</legend>
                         <label for="userName">Username:</label>
-                        <input type="text" name="userName">
+                        <input type="text" name="userName" value ="<?php echo $userWrong?>"></input>
                         <label for="password">Password:</label>
                         <input type="password" name="password">
                         <br>

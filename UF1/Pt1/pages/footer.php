@@ -10,10 +10,11 @@
     <title>Document</title>
 </head>
 <body>
-    <footer class="bg-light">
-        <div class="row">
-            <div class="col text-center">&copy txellfe2020</div>
+    <footer class="page-footer font-small blue bg-light">
+        <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <a href="#"> txellfe</a>
         </div>
     </footer>
+
 </body>
 </html>

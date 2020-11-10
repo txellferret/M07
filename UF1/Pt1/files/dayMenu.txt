@@ -1,0 +1,9 @@
+01;appetiser;Olives
+02;firstcourse;Soup
+03;maincourse;Chicken with potatos
+04;maincourse;Salmon with hummus
+05;dessert;Ice-cream
+06;drink;Coffe
+07;firstcourse;Salad
+08;appetiser;Chips
+09;dessert;Orange juice
