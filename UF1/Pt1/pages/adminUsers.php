@@ -1,3 +1,21 @@
+<?php
+session_start();
+if($_SESSION['userRole'] != "admin") {
+    header("Location:login.php");
+}
+
+$path = "../files/";
+$inputFileUsers = "users.txt";
+
+//array of each user with its properties
+$usersProperties = file($path.$inputFileUsers);
+
+include_once "../functions/functions.php"
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +26,29 @@
 
     <title>Document</title>
 </head>
-<body>
-    Under construction
-    <?php echo "<p>[<a href='index.php'>Index</a>]</p>"; ?>
+<body background="../images/mesas.jpg">
+<?php include_once "topMenu.php"; ?>
+    <div class="container ">
+        <div class="card mt-5 mb-5" style="width: 100%;">
+            <div class="card-header text-center"><h4>Users administration</h4></div>
+            
+            <table class="table text-center">
+                <thead class="thead-light"><tr><th>Username</th><th>Password</th><th>Role</th><th>Name</th><th>Surname</th><th>Email</th></tr></thead>
+                <tbody>
+                    <?php listInput($usersProperties, "User"); ?>
+                <tbody>
+                
+            </table>
+            <div >
+                <button type="button" class="btn btn-danger"><a href ="addUser.php" style="color: white; text-decoration: none">Add User</a></button>  
+            </div>
+             
+        </div>
+            <br>
+            <br>
+            <br>
+        </div>
+    <?php include "footer.php";?>
 </body>
 </html>
 

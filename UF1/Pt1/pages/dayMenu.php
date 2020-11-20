@@ -9,7 +9,7 @@ $categories = file($path.$categoriesFile);
 $dishes = file($path.$inputFileDayMenu);
 
 /**
- * 
+ * It presents the list of day menu, separated by categories
  */
 function dayMenu() {
     global $categories;

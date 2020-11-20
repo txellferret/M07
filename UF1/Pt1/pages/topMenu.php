@@ -19,7 +19,7 @@ if (isset($_SESSION['userRole'])) {
 function buildMenu(string $roleUser) :string{
     $menu ="";
 
-    $menu .="<a class=\"nav-link active\" href=\"#\">Home <span class=\"sr-only\">(current)</span></a>";
+    $menu .="<a class=\"nav-link\" href=\"index.php\">Home <span class=\"sr-only\">(current)</span></a>";
     $menu .="<a class=\"nav-link\" href=\"dayMenu.php\">Day Menu</a>";
     
     if ($roleUser !== "visitor") {
@@ -58,7 +58,7 @@ function buildMenu(string $roleUser) :string{
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a id="brand" class="navbar-brand" href="#">Italian Restaurant</a>
+        <a id="brand" class="navbar-brand" href="index.php">Italian Restaurant</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

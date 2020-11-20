@@ -1,5 +1,5 @@
-01;appetiser;Olives;7
-02;appetiser;Chips;6
+01;appetiser;Olives;3.5
+02;appetiser;Chips;3
 03;firstcourse;Cheese salad;10
 04;firstcourse;Soup;9
 05;maincourse;Chicken with potatos;13
@@ -8,7 +8,9 @@
 08;dessert;Melon;4
 09;drink;Coca cola;2
 10;drink;Water;1
-10;drink;White wine DO Penedes;12
-11;drink;Cava;13
-12;firstcourse;Gazpacho;8
-13;maincourse;Beef;15
+11;drink;White wine DO Penedes;12
+12;drink;Cava;13
+13;firstcourse;Gazpacho;8
+14;maincourse;Beef;15
+15;dessert;Coulant;5
+16;appetiser;Almonds;2.5

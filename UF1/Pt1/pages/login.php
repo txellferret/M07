@@ -30,7 +30,7 @@ if (!is_null(filter_input(INPUT_POST,'submit'))) {
             $userPass = explode(";", $lines[$i]);
             if (strcmp($userPass[0], $userInput) === 0) {
                 if (strcmp(trim($userPass[1]), $passwordInput) === 0) {
-
+                    $_SESSION["loggedin"] = true;
                     $_SESSION["userRole"] = $userPass[2];
                     $_SESSION["userName"] = $userPass[0];
                         header("Location:index.php");  //redirect to application page

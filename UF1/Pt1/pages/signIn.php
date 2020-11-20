@@ -1,76 +1,31 @@
 <?php
-
+include_once "../functions/functions.php";
 $filePath = "../files/users.txt";
 $message = "";
 
 if (!is_null(filter_input(INPUT_POST, "register"))) {
     //variables
-    $name = filter_input(INPUT_POST, 'name');
-    $surname = filter_input(INPUT_POST, 'surname');
-    $username = filter_input(INPUT_POST, 'username');
-    $password = filter_input(INPUT_POST, 'password');
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $surname = filter_input(INPUT_POST, 'surname', FILTER_SANITIZE_STRING);
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 
     $newUser = array ($username, $password, "registered", $name, $surname, $email);
 
     //validate
-    $validFields = false;
-    for ($i=0; $i <count($newUser) ; $i++) { 
-        if (!validateField($newUser[$i])){
-            $message = "Not valid fields";
-        break;
+    if (checkUniqueUsername($username, $filePath)) {
+        //transformem line en un string
+        $stringNewLine = implode(";", $newUser);
+
+        if(file_put_contents($filePath, $stringNewLine.PHP_EOL, FILE_APPEND | LOCK_EX)) {
+            header("Location:index.php");  //redirect to application page
+            $message =  "User ".$username." correctly registered";
         }
-        else $validFields = true;
-    }
-
-    if ($validFields) {
-        if (checkUniqueUsername($username, $filePath)) {
-            //transformem line en un string
-            $stringNewLine = implode(";", $newUser);
-
-            if(file_put_contents($filePath, $stringNewLine.PHP_EOL, FILE_APPEND | LOCK_EX)) {
-
-                header("Location:index.php");  //redirect to application page
-                $message =  "User ".$username." correctly registered";
-            }
-        } else $message = "This username already exists";
-    }
-}
-/**
- * Validates a field if it is not empty or if is not false according to the filter_inputs
- * @param field to validate
- * @return true if it is valid, false otherwise
- */
-function validateField ($field) :bool {
-    $valid = false;
-    if ($field !=="" && $field !== false){
-        $valid = true;
-    }
-    return $valid;
-
-}
-/**
- * Checks if a given username already exits in a data file
- * @param username to check
- * @param filepath to search
- * @return true if it is unique, false otherwise
- */
-function checkUniqueUsername ($username, $filePath) : bool {
-    $unique = true;
-    $handle = fopen($filePath,'r');
-    //posem 0 per omitir caracters de fi de linea
-    while (($row = fgetcsv($handle,0,";")) !== FALSE) {
-        $numero = count($row);
-        if ($row[0] === $username) {
-            $unique = false;
-        break;
-        }
-
-    }
+    } else $message = "This username already exists";
     
-    fclose($handle);
-    return $unique;
 }
+
 
 
 ?>
@@ -94,14 +49,14 @@ function checkUniqueUsername ($username, $filePath) : bool {
                 <div class="form-group row">
                     <label for="name" class="col-sm-2 col-form-label">Name: </label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="name" placeholder="Name">
+                        <input type="text" class="form-control" name="name" placeholder="Name" required>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="surname" class="col-sm-2 col-form-label">Surname: </label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="surname" placeholder="Surname">
+                        <input type="text" class="form-control" name="surname" placeholder="Surname" required>
                     </div>
                 </div>
 
@@ -115,7 +70,7 @@ function checkUniqueUsername ($username, $filePath) : bool {
                 <div class="form-group row">
                     <label for="username" class="col-sm-2 col-form-label">Username: </label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="username" placeholder="Username">
+                        <input type="text" class="form-control" name="username" placeholder="Username" required>
                     </div>
                 </div>
 
@@ -123,7 +78,7 @@ function checkUniqueUsername ($username, $filePath) : bool {
             <div class="form-group row">
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
                 <div class="col-sm-10">
-                <input type="password" class="form-control" name="password" placeholder="Password">
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
                 </div>
             </div>
 

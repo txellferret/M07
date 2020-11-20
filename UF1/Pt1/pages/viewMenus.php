@@ -1,4 +1,9 @@
 <?php
+session_start();
+if(!isset($_SESSION['loggedin'])) {
+    header("Location:login.php");
+}
+
 $path = "../files/";
 $inputFileMenu = "menu.txt";
 $categoriesFile = "categories.txt";
@@ -6,7 +11,9 @@ $categoriesFile = "categories.txt";
 $categories = file($path.$categoriesFile);
 $meals = file($path.$inputFileMenu);
 
-
+/**
+ * It presents the list of dishes with its price separated by categories.
+ */
 function buildCarte() {
     global $categories;
     global $meals;
@@ -20,7 +27,6 @@ function buildCarte() {
                 echo "<tr><td>".$lineDish[2]." ".$lineDish[3]."€</td></tr>";
             }
         }
-        echo "</ul>";
     }
 }
 

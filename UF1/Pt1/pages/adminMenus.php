@@ -1,3 +1,20 @@
+<?php
+session_start();
+if($_SESSION['userRole'] != "admin" && $_SESSION['userRole'] != "staff" ) {
+    header("Location:login.php");
+}
+
+$path = "../files/";
+$inputFileMenu = "menu.txt";
+
+//array of each dish with its properties
+$meals = file($path.$inputFileMenu);
+
+include_once "../functions/functions.php"
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +25,27 @@
 
     <title>Document</title>
 </head>
-<body>
-    Under construction
-    <?php echo "<p>[<a href='index.php'>Index</a>]</p>"; ?>
+<body background="../images/mesas.jpg">
+<?php include_once "topMenu.php"; ?>
+    <div class="container ">
+        <div class="card mt-5 mb-5" style="width: 100%;">
+            <div class="card-header text-center"><h4>Menus administration</h4></div>
+            <table class="table text-center">
+                <thead class="thead-light"><tr><th>Id</th><th>Category</th><th>Name</th><th>Price</th></tr></thead>
+                <tbody>
+                    <?php listInput($meals, "Dish"); ?>
+               <tbody>
+            </table>
+            <div >
+                <button type="button" class="btn btn-danger"><a href ="addDish.php" style="color: white; text-decoration: none">Add meal</a></button>  
+            </div>
+            
+        </div>
+        <br>
+        <br>
+        <br>
+    </div>
+    <?php include "footer.php";?>
 </body>
 </html>
 
