@@ -1,0 +1,4 @@
+1. Programa amb un formulari que entra les dades d'un usuari, les envia i el mateix script al servidor les recull, instancia un objecte User amb les dades rebudes i l'afegeix a la llista d'usuaris UserList emmagatzemada en sessió. També cal mostrar la llista d'usuaris.
+2. Programa que mostra una llista d'usuaris llegits d'un fitxer i amb un formulari entra les dades d'un nou usuari, les envia i el mateix script al servidor les recull, instancia un objecte User amb les dades rebudes i l'afegeix al fitxer d'usuaris.
+3. Definir la jerarquia de classes i interfícies següent: Les classes Animal i Clock implementen l'interfície Speaker, la qual declara el mètode abstracte talk(). Animal té les subclasses Dog i Cat, les qual defineixen el mètode talk(). Crear un programa principal que instanciï objectes d'aquests tipus, els posi en un array i el mostri.
+

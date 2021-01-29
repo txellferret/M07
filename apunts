@@ -104,3 +104,43 @@ Cada sessió té associat un identificador únic i un espai de memòria per a em
 
 
 
+*********************POO**************************
+Les classes:
+El nom del fitxer i de la la classe no cal que sigui igual com a Java: exemple: person.class.php i class Person {}
+Només hi ha un contructor: _construct.
+Els metodes que comencen en _ son metodes magics.
+El punt es per concatenar strings, no per accedir a metodes. Per accedir a metodes es fa: ->
+
+El to String tambe es un metode magic i l'ha classe l'ha de tenir. El to string es pel programador, no per la vista. Es per depurar.
+
+Les classes abstracte tenen metodes que encara no hem definit, aixi no les podem instanciar.
+Normalment te la informació bàsica, que te tothom de la seva herencia. 
+
+::_ operador de resolucio dambit
+
+Els namescpaces es fan servir per eviatar declarar variables o metodes que ja existeixin i que entrin en conflicte. 
+No te res a vure amb el directori (com si els paquets de Java)
+
+
+
+
+22/01/2021
+
+UF2. Arquitectura client servidor
+Sempre per obrir fitxers es  millor en binari, per evitar conflicte en editors.
+-> Servix quan donat un obj accedir a una propietat daquell obj
+
+feof marca el final del fitxer quan hi hem arribat, quan hem Intentat llegir i no avancem.
+
+self:: per accedir (el nom de la classe = self) a un atribut estatic o constant = fa referencia a un classe, en canvi this fa referencia a un obj, cal haver fet un new abans.
+
+
+*********************MVC**************************
+Les peticions sempre a index.html.
+
+
+
+
+
+
+

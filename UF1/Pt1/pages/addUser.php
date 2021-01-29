@@ -67,7 +67,7 @@ if (!is_null(filter_input(INPUT_GET, "addUser"))) {
                         <div class="form-group row">
                             <label for="dish" class="col-sm-2 col-form-label">Role: </label>
                             <div class="col-sm-10">
-                            <select class="form-control" name="category">
+                            <select class="form-control" name="role">
                                 <?php selectCategories($roles, "none") ?>
                             </select>
                         </div>

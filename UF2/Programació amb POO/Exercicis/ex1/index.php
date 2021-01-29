@@ -1,7 +1,21 @@
 <?php
-include_once "../functions/functions.php";
-$filePath = "../files/users.txt";
+
+
+require "clases/user.class.php";
+
+session_start();
 $message = "";
+
+if (isset($_SESSION['userList'])) {
+    "User List: ";
+    for ($i=0; $i < count($_SESSION['userList']); $i++) { 
+        echo ($_SESSION['userList'])[$i];
+        echo "<br>";
+    }
+}else {
+    echo "no users in the list";
+    
+}
 
 if (!is_null(filter_input(INPUT_POST, "register"))) {
     //variables
@@ -10,18 +24,24 @@ if (!is_null(filter_input(INPUT_POST, "register"))) {
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
-    $newUser = array ($username, $password, "registered", $name, $surname);
-
-    //validate
-    if (checkUniqueUsername($username, $filePath)) {
-        //transformem line en un string
-        $stringNewLine = implode(";", $newUser);
-
-        if(file_put_contents($filePath, $stringNewLine.PHP_EOL, FILE_APPEND | LOCK_EX)) {
-            header("Location:index.php");  //redirect to application page
-            $message =  "User ".$username." correctly registered";
+    //create user object
+    $newUser = new User($username, $password, "registered", $name, $surname);
+    if (isset($_SESSION['userList'])) {
+        array_push($_SESSION['userList'],$newUser);
+        for ($i=0; $i < count($_SESSION['userList']); $i++) { 
+            echo ($_SESSION['userList'])[$i];
+            echo "<br>";
         }
-    } else $message = "This username already exists";
+        
+
+    } else {
+        $_SESSION['userList']=array();
+        array_push($_SESSION['userList'],$newUser);
+        for ($i=0; $i < count($_SESSION['userList']); $i++) { 
+            echo ($_SESSION['userList'])[$i];
+            echo "<br>";
+        }
+    }
     
 }
 
@@ -38,8 +58,7 @@ if (!is_null(filter_input(INPUT_POST, "register"))) {
 
     <title>Document</title>
 </head>
-<body background="../images/mesas.jpg">
-<?php include_once "topMenu.php"; ?>
+<body>
 
 <div class="container ">
     <div class="card mt-5" style="width: 100%;">
@@ -76,7 +95,7 @@ if (!is_null(filter_input(INPUT_POST, "register"))) {
 
             <div class="form-group row">
                 <div class="col-sm-10">
-                <button type="submit" class="btn btn-secondary" name ="register">Sign in</button>
+                <button type="submit" class="btn btn-secondary" name ="register">Send</button>
                 </div>
             </div>
             <p><?php echo $message?></p>
@@ -85,6 +104,5 @@ if (!is_null(filter_input(INPUT_POST, "register"))) {
         </div>
     </div>
 </div>
-<?php include "footer.php";?>
 </body>
 </html>

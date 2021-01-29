@@ -33,7 +33,7 @@ include_once "../functions/functions.php"
             <div class="card-header text-center"><h4>Users administration</h4></div>
             
             <table class="table text-center">
-                <thead class="thead-light"><tr><th>Username</th><th>Password</th><th>Role</th><th>Name</th><th>Surname</th><th>Email</th></tr></thead>
+                <thead class="thead-light"><tr><th>Username</th><th>Password</th><th>Role</th><th>Name</th><th>Surname</th></tr></thead>
                 <tbody>
                     <?php listInput($usersProperties, "User"); ?>
                 <tbody>

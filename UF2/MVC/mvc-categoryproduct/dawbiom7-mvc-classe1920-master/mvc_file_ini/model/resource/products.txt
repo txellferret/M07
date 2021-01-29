@@ -1,0 +1,2 @@
+1;Anti-age;1.2;treatment, product, face;1
+2;Aspirin;3.4;treatment, product, headache;2
