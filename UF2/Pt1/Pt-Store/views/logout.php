@@ -1,0 +1,1 @@
+<p>Successfully log out!</p>

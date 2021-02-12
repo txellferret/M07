@@ -52,6 +52,30 @@ class User {
         $this->password = $password;
     }
 
+    public function getRole() {
+        return $this->role;
+    }
+
+    public function setRole($role): void {
+        $this->role = $role;
+    }
+ 
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName( $name): void {
+        $this->name = $name;
+    }
+ 
+    public function getSurname() {
+        return $this->surname;
+    }
+    
+    public function setSurname( $surname): void {
+        $this->surname = $surname;
+    }
+
     
 
     public function __toString():string {
