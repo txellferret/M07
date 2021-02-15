@@ -1,17 +1,21 @@
 <h2>Log in!</h2>
+<?php
+$result = $params['errorLogin']??null;
+if (!is_null($result)) {
+    echo "<div><p class='alert'>$result</p></div>";
+}
 
-<form action="index.php?action=login" method="post">
+?>
+
+<form id="login-form" action="index.php" method="post">
     <label for="username">Username: </label>
     <input type="text" name="username" id="username"> <br>
 
     <label for="username">Password: </label>
     <input type="password" name="password" id="password"><br>
 
-    <button class="btn btn-primary" type="submit" name="submit">Login!</button>
-
+    <button type="submit" >Remove</button>
+    <input name="action" hidden="hidden" value="userLogin"/>
     
 </form>
-<br>
-<?php 
-    if(isset($params['errorLogin'])) echo $params['errorLogin'];
-    ?>
+

@@ -1,6 +1,9 @@
 <?php
     require_once 'lib/ViewLoader.php';
     require_once 'model/Model.php';
+    require_once 'lib/ProductFormValidation.php';
+    require_once 'lib/UserFormValidation.php';
+
     /**
      * Main controller for store application.
      *
@@ -72,7 +75,6 @@
                     $this->doUserForm();   //show user form.
                     break;  
                 case 'login':   //login user.
-                    var_dump('h');
                     $this->doPageLogin();   
                     break;          
                 default:  //processing default action.
@@ -86,21 +88,26 @@
          */
         private function processPost() {
             $this->action = "";
-            if (filter_has_var(INPUT_POST, 'submit')) {
-                $this->doLogin();
-            }
             if (filter_has_var(INPUT_POST, 'action')) {
                 $this->action = filter_input(INPUT_POST, 'action'); 
+
+                var_dump($this->action);
             }
             switch ($this->action) {
                 case 'home':  //home page.
                     $this->doHomePage();
+                    break;
+                case 'product/find'://add product.
+                    $this->doFindProduct();
                     break;
                 case 'product/add':   //add product.
                     $this->doAddProduct();
                     break;
                 case 'product/modify':   //modify product.
                     $this->doModifyProduct(); 
+                    break;
+                case 'user/find':
+                    $this->doFindUser();
                     break;
                 case 'product/remove':   //remove product.
                     $this->doRemoveProduct();   
@@ -114,6 +121,9 @@
                 case 'user/remove':   //remove user.
                     $this->doRemoveUser();   
                     break;
+                case 'userLogin':
+                    $this->doLogin();
+                break;
                 default:  //processing default action.
                     $this->doHomePage();
                     break;
@@ -153,33 +163,186 @@
             }
         }
 
+        
+
         function doAddUser() {
-            
+            $u = UserFormValidation::getData();
+            $result = null;
+            if ($u === null) {
+                $result = "Error reading user";
+            } else {
+                $result = $this->model->addUser($u);
+                if (!$result) {
+                    $result = "User successfully added";
+                } else {
+                    $result = "Error adding user";
+                }            
+            }
+            //pass data to template.
+            $data['result'] = $result;
+            //show the template with the given data.
+            $this->view->show("user-form.php", $data);           
+        }
+
+
+        function doRemoveUser(){
+            $u = UserFormValidation::getData();
+            $result = null;
+            if ($u === null) {
+                $result = "Error reading user";
+            }else {
+                $result = $this->model->removeUser($u);
+                if($result) {
+                    $data['result'] = 'User successfully removed';
+                    $this->view->show("user-form.php", $data);
+                } else {
+                    $data['result'] = "Error removing user";
+                    $this->view->show("user-form.php", $data);
+                }
+            }
+
         }
 
         function doLogin() {
-            if (!is_null(filter_input(INPUT_POST,'submit'))) {
                 //variables
                 $usernameInput = filter_input(INPUT_POST, "username");
                 $passwordInput = filter_input(INPUT_POST, "password");
 
                 $data = $this->model->loginUser($usernameInput,$passwordInput);
-                var_dump($data);
+                
                 if (!is_null($data)) {
-                    $_SESSION["userRole"] = $data;
-                    var_dump($_SESSION);
-                    header("Location: index.php" );
+                    
+                    //$this->view->show("topmenu.php", $data);
+                    header("Location:index.php?role=".$data);  //redirect to application page
+                    exit;
+                    
                 } else {
                     $data["errorLogin"] = "Not valid credentials";
                     $this->view->show("login.php", $data);
                 }
                
-            }
+            
 
         }
 
         function doPageLogin(){
             $this->view->show("login.php");
+        }
+
+        function doUSerForm(){
+            //$product = ProductFormValidation::getData();
+            //$data['product']= $product;
+            $data['action']= $this->action;
+            $this->view->show("user-form.php", $data);
+            
+        }
+
+        function doProductForm(){
+            //$product = ProductFormValidation::getData();
+            //$data['product']= $product;
+            $data['action']= $this->action;
+            $this->view->show("product-form.php", $data);
+            
+        }
+
+        function doFindUser(){
+            $u = UserFormValidation::getData();
+            $result = null;
+            if ($u === null) {
+                $result = "Error reading product";
+            } else {
+                $userFound = $this->model->searchUser($u->getId());
+                if (!is_null($userFound[0])) {
+                    //pass data to template.
+                    $data['user'] = $userFound[0];
+                    $data['action'] = "change";
+                } else {
+                    $result = "Product not found";
+                }            
+            }
+            //pass data to template.
+            $data['result'] = $result;
+            //show the template with the given data.
+            $this->view->show("user-form.php", $data);  
+            
+        }
+
+        function doFindProduct() {
+            $p = ProductFormValidation::getData();
+            $result = null;
+            if ($p === null) {
+                $result = "Error reading product";
+            } else {
+                $productFound = $this->model->searchProduct($p->getId());
+                if (!is_null($productFound[0])) {
+                    //pass data to template.
+                    $data['product'] = $productFound[0];
+                    $data['action'] = "change";
+                } else {
+                    $result = "Product not found";
+                }            
+            }
+            //pass data to template.
+            $data['result'] = $result;
+            //show the template with the given data.
+            $this->view->show("product-form.php", $data);  
+            
+        }
+
+
+        function doAddProduct() {
+            $p = ProductFormValidation::getData();
+            $result = null;
+            if ($p === null) {
+                $result = "Error reading item";
+            } else {
+                $result = $this->model->addProduct($p);
+                if (!$result) {
+                    $result = "Item successfully added";
+                } else {
+                    $result = "Error adding item";
+                }            
+            }
+            //pass data to template.
+            $data['result'] = $result;
+            //show the template with the given data.
+            $this->view->show("product-form.php", $data);  
+        }
+
+        function doRemoveProduct() {
+            $p = ProductFormValidation::getData();
+            $result = null;
+            if ($p === null) {
+                $result = "Error reading item";
+            }else {
+                $result = $this->model->removeProduct($p);
+                if($result) {
+                    $data['result'] = 'Product successfully removed';
+                    $this->view->show("product-form.php", $data);
+                } else {
+                    $data['result'] = "Error removing product";
+                    $this->view->show("product-form.php", $data);
+                }
+            }
+
+        }
+
+
+        function doModifyProduct() {
+            $p = ProductFormValidation::getData();
+            $result = null;
+            if ($p === null) {
+                $result = "Error reading item";
+            }else {
+                $result = $this->model->modifyProduct($p);
+                if($result) {
+                    $data['result'] = 'Product successfully modified';
+                    $this->view->show("product-form.php", $data);
+                } else {
+                    $data['result'] = "Error modifing product";
+                    $this->view->show("product-form.php", $data);
+                }
+            }
         }
 
         

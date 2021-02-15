@@ -16,7 +16,7 @@ class User {
     private $surname;
 
     //En php nomes podem generar un constructor, no com java que en podem definir molts
-    public function __construct(int $id, string $username=null, string $password=null, string $role=null, string $name=null, string $surname=null) {
+    public function __construct(int $id=null, string $username=null, string $password=null, string $role=null, string $name=null, string $surname=null) {
         //sino no donem valors per defecte no ens deixa instanciar un constructor nomes amb el id
         $this->id = $id;
         $this->username = $username;

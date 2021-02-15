@@ -25,10 +25,20 @@ class Model {
     }
 
     function addUser(User $user) {
-        $result = -1;
+        $data = false;
         $dao = DaoFactory::getDao("user");
-        $result= $dao->insert($user);
-        return $result;
+        $data = $dao->insertUser($user);
+        
+        return $data;
+
+    }
+
+    function removeUser(User $user){
+        $data = false;
+        $dao = DaoFactory::getDao("user");
+        $data = $dao->deleteUser($user);
+        
+        return $data;
 
     }
 
@@ -46,34 +56,39 @@ class Model {
     /**
      * adds a product to database.
      * @param Product $product the product to add.
-     * @return int result code for this operation.
+     * @return true if correctly done, false otherwise
      */
     public function addProduct(Product $product): int {
-        $result = -1;
-        //TODO
-        return $result;
+        $data = false;
+        $dao = DaoFactory::getDao("product");
+        $data = $dao->insertProduct($product);
+        
+        return $data;
     }
  
     /**
      * modifies a product to database.
      * @param Product $product the product to modify.
-     * @return int result code for this operation.
+     * @return true if correctly done, false otherwise
      */    
-    public function modifyProduct(Product $product): int {
-        $result = -1;
-        //TODO
-        return $result;
+    public function modifyProduct(Product $product) {
+        $data = false;
+        $dao = DaoFactory::getDao("product");
+        $data = $dao->editProduct($product);
+        return $data;
     }
  
     /**
      * removes a product to database.
-     * @param Product $product he product to remove.
-     * @return int result code for this operation.
+     * @param Product $product the product to remove.
+     * @return true if correctly done, false otherwise
      */
-    public function removeProduct(Product $product): int {
-        $result = -1;
-        //TODO
-        return $result;
+    public function removeProduct(Product $product) {
+        $data = false;
+        $dao = DaoFactory::getDao("product");
+        $data = $dao->deleteProduct($product);
+        
+        return $data;
     }
 
     /**
@@ -90,7 +105,7 @@ class Model {
             //data is an user
             //get password
             if ($user[0] -> getPassword()== $pass){
-                $data['userRole'] = $user[0] -> getRole();
+                $data = $user[0] -> getRole();
 
 
             }
@@ -101,5 +116,24 @@ class Model {
 
 
     }
+
+    public function searchProduct($id) {
+        $data = null;
+        $dao = DaoFactory::getDao("product");
+        $data = $dao->selectWhere(0,$id);
+        
+        return $data;
+    }
+
+
+    public function searchUser($id) {
+        $data = null;
+        $dao = DaoFactory::getDao("user");
+        $data = $dao->selectWhere(0,$id);
+        
+        return $data;
+
+    }
+
  
 }

@@ -63,27 +63,61 @@
         /**
          * inserts a new User
          * @param $user: the user object to insert.
-         * @return number of objects inserted.
+         * @return true if correctly added or false otherwise
          */
         //TODO: treat errors and fail conditions (using exceptions, etc.)
-        public function insert(User $user): int {
-            $result = 0;
+        public function insertUser(User $u) {
+            $result = false;
             $fp = fopen($this->filename, 'a');
             //convert obj to array
-            $attributes = get_object_vars($user);
+            $attributes = array($u->getId(), $u->getUsername(), $u->getPassword(), $u->getRole(), $u->getName(), $u->getSurname());
             
-            foreach ($attributes as $key => $value) {
-
-                fputcsv($fp, $value);
+            if (!fputcsv($fp, $attributes, ";")) {
+                $result = true;
             }
             
-
             fclose($fp);
-
-
-
 
             return $result;
         }
+    
+
+    public function deleteUser(User $u){
+
+        $done =false;
+            //get the user
+            $uuser = $this->selectWhere(0, $u->getId());
+            if (!empty($u)){
+                $attributes = array($u->getId(), $u->getUsername(), $u->getPassword(), $u->getRole(), $u->getName(), $u->getSurname());
+                $d = implode(";", $attributes);
+                
+                $allDoc = file($this->filename);
+                //trim last space
+                $a = array();
+                foreach ($allDoc as $v) {
+                    array_push($a, trim($v));
+                    
+                }
+                if (($key = array_search($d, $a)) !== false) {
+                    unset($allDoc[$key]);
+
+                    $h = fopen($this->filename, "w");
+                    if ($h !==false ) {
+                        // Guardar los cambios en el archivo:
+                        for ($i=0; $i < count($allDoc); $i++) { 
+                            trim($allDoc[$i]);
+                            fwrite($h, $allDoc[$i]);
+                        }
+                        $done = true;
+                    }
+                    fclose($h);
+
+                }
+            }
+            
+            return $done;
+        
+
     }
 
+}
