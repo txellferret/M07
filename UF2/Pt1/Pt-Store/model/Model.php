@@ -28,7 +28,6 @@ class Model {
         $data = false;
         $dao = DaoFactory::getDao("user");
         $data = $dao->insertUser($user);
-        
         return $data;
 
     }
@@ -133,6 +132,20 @@ class Model {
         
         return $data;
 
+    }
+
+
+
+    /**
+     * modifies a user to database.
+     * @param USer $user the user to modify.
+     * @return true if correctly done, false otherwise
+     */    
+    public function modifyUser(User $user) {
+        $data = false;
+        $dao = DaoFactory::getDao("user");
+        $data = $dao->editUser($user);
+        return $data;
     }
 
  

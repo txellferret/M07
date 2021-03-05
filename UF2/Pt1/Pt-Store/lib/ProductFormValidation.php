@@ -37,12 +37,8 @@ class ProductFormValidation {
             $stock = filter_input(INPUT_POST, 'stock', FILTER_VALIDATE_INT); 
         }
 
-
-        //if (!empty($id) && !empty($title) && !empty($content)) { 
-            //they exists and they are not empty
-            $productObj = new Product(intval($id), $description, floatval($price), intval($stock));
+        $productObj = new Product(intval($id), $description, floatval($price), intval($stock));
             
-        //}
         return $productObj;
     }
     

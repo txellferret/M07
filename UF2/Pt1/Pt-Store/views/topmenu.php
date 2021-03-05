@@ -1,6 +1,4 @@
-<?php
 
-?>
 <nav>
     <ul>
         <li><a class = "nav-link" href="index.php?action=home">Home</a></li>

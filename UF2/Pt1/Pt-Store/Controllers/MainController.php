@@ -76,7 +76,10 @@
                     break;  
                 case 'login':   //login user.
                     $this->doPageLogin();   
-                    break;          
+                    break;
+                case 'logout':   //logout user.
+                    $this->doPageLogout();   
+                    break;                 
                 default:  //processing default action.
                     $this->doHomePage();
                     break;
@@ -90,8 +93,6 @@
             $this->action = "";
             if (filter_has_var(INPUT_POST, 'action')) {
                 $this->action = filter_input(INPUT_POST, 'action'); 
-
-                var_dump($this->action);
             }
             switch ($this->action) {
                 case 'home':  //home page.
@@ -172,7 +173,7 @@
                 $result = "Error reading user";
             } else {
                 $result = $this->model->addUser($u);
-                if (!$result) {
+                if ($result) {
                     $result = "User successfully added";
                 } else {
                     $result = "Error adding user";
@@ -212,8 +213,8 @@
                 
                 if (!is_null($data)) {
                     
-                    //$this->view->show("topmenu.php", $data);
-                    header("Location:index.php?role=".$data);  //redirect to application page
+                    $_SESSION['userRole'] = $data;
+                    header("Location:index.php");  //redirect to application page
                     exit;
                     
                 } else {
@@ -221,12 +222,14 @@
                     $this->view->show("login.php", $data);
                 }
                
-            
-
         }
 
         function doPageLogin(){
             $this->view->show("login.php");
+        }
+
+        function doPageLogout(){
+            $this->view->show("logout.php");
         }
 
         function doUSerForm(){
@@ -332,7 +335,7 @@
             $p = ProductFormValidation::getData();
             $result = null;
             if ($p === null) {
-                $result = "Error reading item";
+                $result = "Error reading product";
             }else {
                 $result = $this->model->modifyProduct($p);
                 if($result) {
@@ -341,6 +344,24 @@
                 } else {
                     $data['result'] = "Error modifing product";
                     $this->view->show("product-form.php", $data);
+                }
+            }
+        }
+
+
+        function doModifyUser(){
+            $u = UserFormValidation::getData();
+            $result = null;
+            if ($u === null) {
+                $result = "Error reading user";
+            }else {
+                $result = $this->model->modifyUser($u);
+                if($result) {
+                    $data['result'] = 'User successfully modified';
+                    $this->view->show("user-form.php", $data);
+                } else {
+                    $data['result'] = "Error modifing user";
+                    $this->view->show("user-form.php", $data);
                 }
             }
         }

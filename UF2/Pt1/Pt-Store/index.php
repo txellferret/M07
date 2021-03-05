@@ -2,9 +2,6 @@
 session_start();
 
 
-
-
-
     ini_set('display_errors', 1); //obliga a php q ens ensenyi tots els errors q es produeixen. 
     ini_set('display_startup_errors', 1);   
     ini_set('error_reporting', E_ALL);
@@ -22,13 +19,7 @@ session_start();
   </head>
   <body>
       <?php
-       
-if(isset($_REQUEST) && isset($_REQUEST['role'])){
-  $role = $_REQUEST['role'];
-  session_start();
-  $_SESSION['userRole'] =$role;
-  var_dump($_SESSION);
-}
+ 
       //Si volguessim que el menu fos dinamic, hauria de ser un php, no un html.
         include "views/topmenu.php";
       ?>

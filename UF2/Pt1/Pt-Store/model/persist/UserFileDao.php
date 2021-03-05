@@ -65,19 +65,21 @@
          * @param $user: the user object to insert.
          * @return true if correctly added or false otherwise
          */
-        //TODO: treat errors and fail conditions (using exceptions, etc.)
         public function insertUser(User $u) {
             $result = false;
-            $fp = fopen($this->filename, 'a');
-            //convert obj to array
-            $attributes = array($u->getId(), $u->getUsername(), $u->getPassword(), $u->getRole(), $u->getName(), $u->getSurname());
-            
-            if (!fputcsv($fp, $attributes, ";")) {
-                $result = true;
+            if ($u->getRole() == "admin" || $u->getRole() =="staff"){
+                $fp = fopen($this->filename, 'a');
+                //convert obj to array
+                $attributes = array($this->getNextId(), $u->getUsername(), $u->getPassword(), $u->getRole(), $u->getName(), $u->getSurname());
+                
+                if (fputcsv($fp, $attributes, ";")) {
+                    $result = true;
+                }
+                
+                fclose($fp);
+
             }
             
-            fclose($fp);
-
             return $result;
         }
     
@@ -119,5 +121,58 @@
         
 
     }
+
+    public function editUser(User $user) {
+        $done =false;
+        $u = $this->selectWhere(0, $user->getId());
+        if (!empty($u)){
+            $attributes = array($user->getId(), $user->getUsername(), $user->getPassword(), $user->getRole(), $user->getName(), $user->getSurname());
+
+                $allDoc = file($this->filename);
+                //trim last space
+                $a = array();
+                foreach ($allDoc as $v) {
+                    array_push($a, trim($v));
+                    
+                }
+                for ($i=0; $i < count($a); $i++) { 
+                    $line = explode(";",$a[$i]);
+                    if($line[0] == $attributes[0]){
+                        //transformem line en un string
+                        $strinNewLine = implode(";", $attributes);
+                        $allDoc[$i] = $strinNewLine.PHP_EOL;
+                    break;
+                    }
+                }
+               
+                $h = fopen($this->filename, "w");
+                    if ($h !==false ) {
+                        // Guardar los cambios en el archivo:
+                        for ($i=0; $i < count($allDoc); $i++) { 
+                            trim($allDoc[$i]);
+                            fwrite($h, $allDoc[$i]);
+                        }
+                        $done = true;
+                    }
+                    fclose($h);
+                $done = true;
+            
+            
+            }
+            return $done;
+    }
+/*
+* Get next Id for the future user
+ * @return the next id or 0 if an error ocurred
+ */
+function getNextId () : int{
+    $id = 0;
+    if ($lines = file($this->filename)){
+        $lastLine = explode(";", $lines[count($lines)-1]);
+        $id = $lastLine[0]+1;
+    }
+    return $id;
+
+}
 
 }

@@ -73,7 +73,8 @@ class ProductFileDAO {
             $result = false;
             $fp = fopen($this->filename, 'a');
             //convert obj to array
-            $attributes = array($p->getId(), $p->getDescription(), $p->getPrice(), $p->getStock());
+            $attributes = array($this->getNextId(), $p->getDescription(), $p->getPrice(), $p->getStock());
+            var_dump($attributes);
             if (!fputcsv($fp, $attributes, ";")) {
                 $result = true;
             }
@@ -162,10 +163,21 @@ class ProductFileDAO {
             
             
             }
-
-
-
             return $done;
         }
+
+        /**
+ * Get next Id for the future product
+ * @return the next id or 0 if an error ocurred
+ */
+function getNextId () : int{
+    $id = 0;
+    if ($lines = file($this->filename)){
+        $lastLine = explode(";", $lines[count($lines)-1]);
+        $id = $lastLine[0]+1;
+    }
+    return $id;
+
+}
     
 }

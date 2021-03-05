@@ -18,7 +18,7 @@ function submitForm(event) {
    if (is_null($p)) {
        $p = new Product();
    }
-   $disable = (($action == "findProduct")||($action == "product/form"))?"disabled":"";
+   $disable = (($action == "product/find")||($action == "product/form"))?"disabled":"";
    if (!is_null($result)) {
        echo <<<EOT
        <div><p class="alert">$result</p></div>
@@ -27,7 +27,7 @@ EOT;
    echo <<<EOT
    <form id="product-form" method="post" action="index.php">
     <fieldset>
-        <label for="id">Id: </label><input type="text" name="id" id="id" placeholder="enter id" value="{$p->getId()}"/>
+        <label for="id">Id: </label><input type="text" name="id" id="id" placeholder="enter id" value="{$p->getId()}" />
         <label for="description">Description: </label><input type="text" name="description" id="description" placeholder="enter description" value="{$p->getDescription()}"/>
         <label for="price">Price: </label><input type="text" name="price" id="price" placeholder="enter price" value="{$p->getPrice()}"/>
         <label for="stock">Stock: </label><input type="number" name="stock" id="stock" placeholder="enter stock" value="{$p->getStock()}"/>

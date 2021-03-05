@@ -14,7 +14,7 @@ if (!is_null($result)) {
     <label for="username">Password: </label>
     <input type="password" name="password" id="password"><br>
 
-    <button type="submit" >Remove</button>
+    <button type="submit" >Send</button>
     <input name="action" hidden="hidden" value="userLogin"/>
     
 </form>

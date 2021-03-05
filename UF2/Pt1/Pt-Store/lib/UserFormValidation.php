@@ -49,11 +49,10 @@ class UserFormValidation {
         }
 
 
-        //if (!empty($id) && !empty($title) && !empty($content)) { 
-            //they exists and they are not empty
-            $userObj = new User(intval($id), $username, $password, $role, $name, $surname);
+       
+        $userObj = new User(intval($id), $username, $password, $role, $name, $surname);
             
-        //}
+     
         return $userObj;
     }
     

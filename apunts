@@ -139,6 +139,10 @@ self:: per accedir (el nom de la classe = self) a un atribut estatic o constant 
 Les peticions sempre a index.html.
 
 
+26/02/2021
+mySQLi es de mes baix nivell, i ara casi no es fa servir.
+La PDO te una capa de absatraccio mes gran i permet programar la mateixa base de dades de qualsevol manera.
+
 
 
 
