@@ -1,0 +1,51 @@
+-- Crear usuari per a accés local.
+CREATE USER 'provenusr'@'localhost' IDENTIFIED BY 'provenpass';
+-- Crear base de dades.
+CREATE DATABASE proven
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
+USE proven;
+-- Assignar permisos a l'usuari local sobre la base de dades.
+GRANT SELECT, INSERT, UPDATE, DELETE ON proven.* TO 'provenusr'@'localhost';
+//GRANT ALL PRIVILEGES ON proven.* TO 'provenusr'@'localhost';
+
+
+CREATE TABLE items (
+   id INTEGER PRIMARY KEY AUTO_INCREMENT,
+   item VARCHAR(255)
+) ENGINE=InnoDb;
+
+INSERT INTO items (item) VALUES 
+  ('item 1'),
+  ('item 2'),
+  ('item 3'),
+  ('item 4'),
+  ('item 5');
+  
+show databases;
+show tables;
+describe items;
+select host, user, password from mysql.user;
+
+
+select * from items;
+
+---------------------------
+Transaction:
+Quan fem una consulta a una bd, per exemple inserir un nou element, es fan automaticament. Hi ha un attribute per defecte a la bd q es autocomit q per defecte es true. 
+
+Quan enviem tot un batch, tota una tanda de consultes, i fins q no hem enviat lultima no es procesi, per evitar lalteració entremig del procés.
+fins que no sexecuti totes les consultes no es validi tot el proces.
+
+Per exemple en una transacció bancaria, de tranferencia. Al final fem el commit, i si falla alguna de les consultes de la transsacció es captura lexepcio i fem rollback, per tirar enrere. 
+
+
+Hi ha un metode beginTrasaction, metode rollback i  un metode commit.
+
+Pero de moment deixarem el autocomit a true.
+
+Amb query nomes faremn servir les consultes q no tenen parametres (si hi ha un where no) --> ja que sino es molt facil la injeccio de codi.
+Sevita amb les prepared statement
+
+
+
