@@ -63,6 +63,36 @@ class StoreModel {
         $dbHelper = new ProductDao();
         return $dbHelper->selectAll();
     }
+
+
+     /******************SESSION CONTROLS***************** */
+
+    /**
+     * checks if user is can log in
+     * @param user username entered by user
+     * @param pass the password entered by user
+     * @return user found or null in case of invalid credentials
+     */
+    public function loginUser($user, $pass){
+        $data = null;
+        $dbHelper = new UserDao();
+        $result = $dbHelper->selectUserByUsername($user);
+        if (!is_null($result)){
+            //result is an user
+            //get password
+            if ($result->getPassword() == $pass){
+                $data = $result;
+            }
+            
+        }
+        
+        return $data;
+
+
+    }
+
+
+
     
     
 

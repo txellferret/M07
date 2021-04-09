@@ -102,6 +102,9 @@ class MainController {
             case 'loginform':
                 $this->loginForm();
                 break;
+            case 'logout':   //logout user.
+                $this->logoutUser();   
+                break;
             default:  //processing default action.
                 $this->handleError();
                 break;
@@ -112,15 +115,19 @@ class MainController {
      * processes post requests from client.
      */
     private function doPost() {
-        var_dump("he");
         //process action.
         switch ($this->action) {
             case 'user/role':
-                var_dump("caca");
                 $this->listUsersByRole();
                 break;
             case 'user/add':
                 $this->userEditForm("add");
+                break;
+            case 'userLogin':
+                $this->doLogin();
+            break;
+            case 'add/userForm':
+                $this-> addUserForm();
                 break;
             default:  //processing default action.
                 $this->homePage();
@@ -140,7 +147,7 @@ class MainController {
     /**
      * displays home page content.
      */
-    public function homePage() {
+    private function homePage() {
         $this->view->show("home.php", []);
     }
 
@@ -149,8 +156,50 @@ class MainController {
     /**
      * displays login form page.
      */
-    public function loginForm() {
-        $this->view->show("login/loginform.php", []);  //initial prototype version;
+    private function loginForm() {
+        $data = null;
+        if(isset($_SESSION['nameUser'])){
+            $data["alreadyLogged"] = "User already logged in";
+        }
+        $this->view->show("login/loginform.php", $data);  
+    }
+
+    /**
+     * Does log out if user logged in.
+     */
+    private function logoutUser(){
+        if(isset($_SESSION['nameUser'])){
+            $this->view->show("logout/logout.php");
+        } else {
+            header("Location:index.php");
+        }
+        
+    }
+
+    /**
+     * Do log in to application if crediantials are correct
+     * 
+     */
+    private function doLogin() {
+        //variables
+        $usernameInput = filter_input(INPUT_POST, "username");
+        $passwordInput = filter_input(INPUT_POST, "password");
+
+        $data = $this->model->loginUser($usernameInput,$passwordInput);
+                
+            if (!is_null($data)) {
+
+                $_SESSION['nameUser'] = $data -> getFirstname()." ".$data -> getLastname();  
+                $_SESSION['userRole'] = $data -> getRole();
+                header("Location:index.php");  //redirect to application page
+                exit;
+                    
+            } else {
+                $data["errorLogin"] = "Not valid credentials";
+                $this->view->show("login/loginform.php", $data);
+            }
+
+
     }
 
     /* ============== USER MANAGEMENT CONTROL METHODS ============== */
@@ -158,7 +207,7 @@ class MainController {
     /**
      * displays user management page.
      */
-    public function userMng() {
+    private function userMng() {
         //get all users.
         $result = $this->model->findAllUsers();
         //pass list to view and show.
@@ -169,10 +218,9 @@ class MainController {
     /**
      * Lists users given a role.
      */
-    public function listUsersByRole() {
-        var_dump("caca");
+    private function listUsersByRole() {
         //get role sent from client to search.
-        $roletoSearch = \filter_input(INPUT_POST, "search", FILTER_SANITIZE_STRING);
+        $roletoSearch = \filter_input(INPUT_POST, "role", FILTER_SANITIZE_STRING);
         if ($roletoSearch !== false) {
             //get users with that role.
             $result = $this->model->findUsersByRole($roletoSearch);
@@ -186,6 +234,12 @@ class MainController {
 
     private function userEditForm(string $mode) {
         $this->view->show("user/userdetail.php", ['message' => $mode]);  //initial prototype version.
+    }
+
+    private function addUserForm(){
+        $data['listRoles'] = array("admin", "registered"); //TODO: query to DB
+        $data['action'] = "add";
+        $this->view->show("user/userForm.php", $data);
     }
 
     /* ============== CATEGORY MANAGEMENT CONTROL METHODS ============== */

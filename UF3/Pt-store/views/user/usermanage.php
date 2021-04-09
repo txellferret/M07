@@ -1,20 +1,14 @@
 
-<script type="text/javascript">
-function submitForm(event) {
-    var target = event.target;
-    var buttonId = target.id;
-    var myForm = document.getElementById('role-form');
-    myForm.action.value = buttonId;
-    myForm.submit();
-    return false;
-}
-</script>
 <h2>User management page</h2>
-<form action="user/role" method="post" >
+<form action="index.php" method="post" >
     <label for="role">Role to search:</label>
     <input type="text" name="role" id="role">
-    <button type="submit" name="user/role">Search</button>
+
+    <button type="submit" name="action" value="user/role">Send</button>
+    <button type="submit" name="action" value="add/userForm">Add</button>
 </form>
+
+
 <!--list of users-->
 <?php
 $list = $params['list'] ?? null;

@@ -1,4 +1,4 @@
-<p>Category management page</p>
+<h2>Category management page</h2>
 <?php
 //display list in a table.
 $list = $params['list'] ?? null;

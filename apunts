@@ -1,5 +1,5 @@
 M07
-
+wiki Jose: https://docencia.proven.cat/jmoreno/wiki/doku.php?id=docencia:dawbi:m07:uf4:laravel
 22/09
 https es el protocol d'intercanvi de informació, HTTPS vol dir que es segur. La infomració va xifrada. 
 http no es segur. La informació va amb text pla.
@@ -144,6 +144,15 @@ mySQLi es de mes baix nivell, i ara casi no es fa servir.
 La PDO te una capa de absatraccio mes gran i permet programar la mateixa base de dades de qualsevol manera.
 
 
+
+09/04/2021
+Aplications hibrides
+
+/****rutes anidables***/
+composer es un gestor de paquets per php
+localhost/app/user/name -> ruta anidables, tot amb barres. Es el que fan servir els webservices
+
+cal dir a apache q instali un modul q sigui capaç de interpretar les rutes anidables: sudo a2enmod rewrite
 
 
 
