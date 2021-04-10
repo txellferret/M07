@@ -2,14 +2,20 @@
 
 namespace proven\store\controllers;
 
-//TODO implements all functionalities.
 
 require_once 'lib/ViewLoader.php';
+require_once 'lib/UserFormValidation.php';
+require_once 'lib/CategoryFormValidation.php';
+
 require_once 'model/StoreModel.php';
 require_once 'model/User.php';
+require_once 'model/Category.php';
+
 
 use proven\store\model\StoreModel as Model;
 use proven\lib\ViewLoader as View;
+use proven\lib\UserFormValidation as UserFormValidation;
+use proven\lib\CategoryFormValidation as CategoryFormValidation;
 
 /**
  * Main controller
@@ -123,12 +129,21 @@ class MainController {
             case 'user/add':
                 $this->userEditForm("add");
                 break;
+            case 'addUser':
+                $this->addUser();
+                break;
+            case 'category/add':
+                $this->categoryEditForm("add");
+                break;
+            case 'addCategory': 
+                $this->addCategory();
+                break;
+            case 'deleteProduct':
+                $this->deleteProduct();
+                break;
             case 'userLogin':
                 $this->doLogin();
             break;
-            case 'add/userForm':
-                $this-> addUserForm();
-                break;
             default:  //processing default action.
                 $this->homePage();
                 break;
@@ -232,38 +247,108 @@ class MainController {
         }
     }
 
+
+    /**
+     * Shows user form
+     * @param mode: if form is to add or modify
+     */
     private function userEditForm(string $mode) {
-        $this->view->show("user/userdetail.php", ['message' => $mode]);  //initial prototype version.
+        $data['listRoles'] = array("admin", "registered"); //TODO: query to DB
+        $data['action'] = $mode;
+        $this->view->show("user/userForm.php", $data);  
     }
 
-    private function addUserForm(){
-        $data['listRoles'] = array("admin", "registered"); //TODO: query to DB
-        $data['action'] = "add";
-        $this->view->show("user/userForm.php", $data);
+    /**
+     * Adds a user to DB
+     */
+    private function addUser() {
+        $u = UserFormValidation::getData();
+            $result = null;
+            if ($u === null) {
+                $result = "Error reading user";
+            } else {
+                $result = $this->model->addUser($u);
+                if ($result) {
+                    $result = "User successfully added";
+                } else {
+                    $result = "Error adding user";
+                }            
+            }
+            //pass data to template.
+            $data['result'] = $result;
+            $data['action'] = 'add';
+            //show the template with the given data.
+            $this->view->show("user/userForm.php", $data);  
+
+
     }
+
+   
 
     /* ============== CATEGORY MANAGEMENT CONTROL METHODS ============== */
 
     /**
      * displays category management page.
      */
-    public function categoryMng() {
+    private function categoryMng() {
         //get all categories.
         $result = $this->model->findAllCategories();
         //pass list to view and show.
         $this->view->show("category/categorymanage.php", ['list' => $result]);
     }
 
+    private function categoryEditForm(string $mode) {
+        $data['action'] = $mode;
+        $this->view->show("category/categoryForm.php", $data);  
+    }
+    
+    private function addCategory() {
+        $c = CategoryFormValidation::getData();
+        $result = null;
+        if ($c === null) {
+            $result = "Error reading category";
+        } else {
+            $result = $this->model->addCategory($c);
+            if ($result) {
+                $result = "Category successfully added";
+            } else {
+                $result = "Error adding category";
+            }            
+        }
+        //pass data to template.
+        $data['result'] = $result;
+        $data['action'] = 'add';
+        //show the template with the given data.
+        $this->view->show("category/categoryForm.php", $data);  
+    }
+
+
     /* ============== PRODUCT MANAGEMENT CONTROL METHODS ============== */
 
     /**
      * displays product management page.
      */
-    public function productMng() {
+    private function productMng() {
         //get all categories.
         $result = $this->model->findAllProducts();
         //pass list to view and show.
         $this->view->show("product/productmanage.php", ['list' => $result]);
+    }
+
+    private function deleteProduct() {
+        $data = null;
+        $id = filter_input(INPUT_POST, 'id'); 
+        
+        $result = $this->model->deleteProduct($id);
+        if ($result) {
+            $this->productMng();
+        } else {
+            $data['result'] = "Error deleting product";
+            $this->view->show("product/productmanage.php", $data);
+        }
+        
+
+        
     }
 
 

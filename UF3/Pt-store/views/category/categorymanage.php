@@ -1,4 +1,8 @@
 <h2>Category management page</h2>
+<form action="index.php" method="post" >
+    <button type="submit" name="action" value="category/add">Add</button>
+</form>
+
 <?php
 //display list in a table.
 $list = $params['list'] ?? null;

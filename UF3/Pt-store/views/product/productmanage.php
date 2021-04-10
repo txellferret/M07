@@ -8,11 +8,18 @@
 </form>
 <!--list of users-->
 <?php
+$result = $params['result'] ?? null;
+if (!is_null($result)) {
+    echo <<<EOT
+    <div><p class="alert">$result</p></div>
+EOT;
+}  
 $list = $params['list'] ?? null;
+
 if (isset($list)) {
     echo <<<EOT
         <table class="table table-sm table-bordered table-striped table-hover caption-top table-responsive-sm">
-        <caption>List of users</caption>
+        <caption>List of products</caption>
         <thead class='table-primary'>
         <tr>
             <th>Code</th>
@@ -20,6 +27,7 @@ if (isset($list)) {
             <th>Price</th>
             <th>Stock</th>
             <th>Category Id</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +41,15 @@ EOT;
                 <td>{$elem->getPrice()}</td>
                 <td>{$elem->getStock()}</td>
                 <td>{$elem->getcategoryId()}</td>
+                <td>
+                <form action="index.php"  method="post">
+                    <input type='text' hidden name ="id" value="{$elem->getId()}">
+                    <button class ="btn btn-primary" type="submit"  name="action" value="editProduct">Edit</button>
+                    <button class ="btn btn-danger" type="submit" onclick="return confirmDialog()" name="action" value="deleteProduct">Delete</button>
+                </form>
+
+                </td>
+
             </tr>               
 EOT;
     }
@@ -44,3 +61,10 @@ EOT;
 } else {
     echo "No data found";
 }
+?>
+<script>
+function confirmDialog() {
+    return window.confirm("Are you sure?");
+}
+
+</script>

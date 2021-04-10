@@ -42,6 +42,14 @@ class StoreModel {
         return $dbHelper->selectByRole($role);
     }
 
+    function addUser(User $user) {
+        $data = false;
+        $dbHelper = new UserDao();
+        $data = $dbHelper->insert($user);
+        return $data;
+
+    }
+
 
 
 
@@ -55,6 +63,14 @@ class StoreModel {
         return $dbHelper->selectAll();
     }
 
+    function addCategory(Category $category) {
+        $data = false;
+        $dbHelper = new CategoryDao();
+        $data = $dbHelper->insert($category);
+        return $data;
+
+    }
+
 
 
     /******************PRODUCTS***************** */
@@ -62,6 +78,14 @@ class StoreModel {
     public function findAllProducts() {
         $dbHelper = new ProductDao();
         return $dbHelper->selectAll();
+    }
+
+    public function deleteProduct ($id) {
+        $data = false;
+        $dbHelper = new ProductDao();
+        $data = $dbHelper->delete($id);
+        return $data;
+
     }
 
 

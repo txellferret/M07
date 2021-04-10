@@ -281,14 +281,14 @@ class ProductDao {
      * @param entity the entity object to delete.
      * @return number of rows affected.
      */
-    public function delete(Product $entity): int {
+    public function delete($id): int {
         $numAffected = 0;
         try {
             //PDO object creation.
             $connection = $this->dbConnect->getConnection(); 
             //query preparation.
             $stmt = $connection->prepare($this->queries['DELETE']);
-            $stmt->bindValue(":id", $entity->getId());
+            $stmt->bindValue(":id", $id);
             //query execution.
             $success = $stmt->execute(); //bool
 

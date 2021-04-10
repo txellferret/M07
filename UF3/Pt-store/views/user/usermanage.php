@@ -5,7 +5,7 @@
     <input type="text" name="role" id="role">
 
     <button type="submit" name="action" value="user/role">Send</button>
-    <button type="submit" name="action" value="add/userForm">Add</button>
+    <button type="submit" name="action" value="user/add">Add</button>
 </form>
 
 

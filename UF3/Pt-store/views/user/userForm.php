@@ -2,7 +2,13 @@
 
 $roles = $params['listRoles']??null;
 $action = $params['action']??null;
+$result = $params['result']??null;
 
+if (!is_null($result)) {
+    echo <<<EOT
+    <div><p class="alert">$result</p></div>
+EOT;
+}  
 ?>
 <form action="" method="post">
     <div class="form-group row">
@@ -46,9 +52,9 @@ $action = $params['action']??null;
 
     <?php
     if($action == "add") {
-        echo "<button type='submit' class='btn btn-success' name ='addUser'>Add User</button>";
+        echo "<button type='submit' class='btn btn-success' name ='action' value='addUser'>Add User</button>";
     } elseif($action == "edit") {
-        echo "<button type='submit' class='btn btn-primary' name ='editUser'>Edit User</button>";
+        echo "<button type='submit' class='btn btn-primary' name ='action'>Edit User</button>";
     }
     ?>
     <button type="button" class="btn btn-secondary"><a href ="index.php" style="color: white; text-decoration: none">Cancel</a></button> 
