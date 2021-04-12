@@ -71,6 +71,19 @@ class StoreModel {
 
     }
 
+    public function findCategoryById($id) {
+        $dbHelper = new CategoryDao();
+        return $dbHelper->select($id);
+
+    }
+
+    public function editCategory (Category $category) {
+        $data = false;
+        $dbHelper = new CategoryDao();
+        $data = $dbHelper->update($category);
+        return $data;
+    }
+
 
 
     /******************PRODUCTS***************** */
@@ -80,12 +93,38 @@ class StoreModel {
         return $dbHelper->selectAll();
     }
 
+    public function findProductsByCategory(int $category): ?array {
+        $dbHelper = new ProductDao();
+        return $dbHelper->selectByCategory($category);
+    
+    }
+
+    public function findProductById($id) {
+        $dbHelper = new ProductDao();
+        return $dbHelper->select($id);
+
+    }
+
     public function deleteProduct ($id) {
         $data = false;
         $dbHelper = new ProductDao();
         $data = $dbHelper->delete($id);
         return $data;
 
+    }
+
+    public function addProduct(Product $product) {
+        $data = false;
+        $dbHelper = new ProductDao();
+        $data = $dbHelper->insert($product);
+        return $data;
+    }
+
+    public function editProduct (Product $product) {
+        $data = false;
+        $dbHelper = new ProductDao();
+        $data = $dbHelper->update($product);
+        return $data;
     }
 
 

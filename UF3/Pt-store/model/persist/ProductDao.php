@@ -98,14 +98,14 @@ class ProductDao {
      * @param propertySearch the property to look for
      * @return entity object being searched or null if not found or in case of error.
      */
-    public function select(Product $entity): ?Product {
+    public function select(int $id): ?Product {
         $data = null;
         try {
             //PDO object creation.
             $connection = $this->dbConnect->getConnection(); 
             //query preparation.
             $stmt = $connection->prepare($this->queries['SELECT_WHERE_ID']);
-            $stmt->bindValue(':id', $entity->getId(), \PDO::PARAM_INT);
+            $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
             
             //query execution.
             $success = $stmt->execute(); //bool
@@ -171,15 +171,14 @@ class ProductDao {
         return $data;   
     }
 
-    public function selectByCategory(int $category_id) : ?Product {
-        $data = null;
+    public function selectByCategory(int $category_id) : array {
+        $data = array();
         try {
             //PDO object creation.
             $connection = $this->dbConnect->getConnection(); 
             //query preparation.
             $stmt = $connection->prepare($this->queries['SELECT_WHERE_CATEGORY']);
             $stmt->bindValue(':category_id', $category_id, \PDO::PARAM_INT);
-            
             //query execution.
             $success = $stmt->execute(); //bool
             //Statement data recovery.
@@ -187,24 +186,24 @@ class ProductDao {
                 if ($stmt->rowCount()>0) {
                     //set fetch mode.
                     $stmt->setFetchMode(\PDO::FETCH_ASSOC);
-                    // get one row at the time
-                    if ($p = $this->fetchToEntity($stmt)){
-                        $data = $p;
+                    // get one row at the time, ho converteix a objecte (manualment)
+                    while ($u = $this->fetchToEntity($stmt)){
+                        array_push($data, $u);
                     }
+                   
                 } else {
-                    $data = null;
+                    $data = array();
                 }
             } else {
-                $data = null;
+                $data = array();
             }
-
         } catch (\PDOException $e) {
             print "Error Code <br>".$e->getCode();
             print "Error Message <br>".$e->getMessage();
             print "Strack Trace <br>".nl2br($e->getTraceAsString());
-            $data = null;
+            $data = array();
         }   
-        return $data;
+        return $data;  
     }
 
     /**

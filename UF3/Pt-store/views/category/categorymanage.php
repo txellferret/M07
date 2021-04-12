@@ -1,7 +1,13 @@
 <h2>Category management page</h2>
+
 <form action="index.php" method="post" >
-    <button type="submit" name="action" value="category/add">Add</button>
+    <button type="submit" name="action" value="category/add">Add</button>   
 </form>
+<form id ="categoryForm" action="index.php" method="post" >
+    <input type='text' id ="idCategory" name ="idCategory" value="" hidden>
+    <input name="action" hidden="hidden" value="category/edit"/>
+</form>
+
 
 <?php
 //display list in a table.
@@ -21,7 +27,7 @@ EOT;
     // $params contains variables passed in from the controller.
     foreach ($list as $elem) {
         echo <<<EOT
-            <tr>
+            <tr id='{$elem->getId()}' class='clickable-row'>
                 <td>{$elem->getCode()}</td>
                 <td>{$elem->getDescription()}</td>
             </tr>               
@@ -35,3 +41,14 @@ EOT;
 } else {
     echo "No data found";
 }
+
+?>
+<script>
+jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        var idCat = $(this).attr('id');
+        $("#idCategory").val(idCat)
+        $("#categoryForm").submit();
+    });
+});
+</script>

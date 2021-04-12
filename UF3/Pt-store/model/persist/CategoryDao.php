@@ -89,14 +89,14 @@ class CategoryDao {
      * @param entity the entity to search.
      * @return entity object being searched or null if not found or in case of error.
      */
-    public function select(Category $entity): ?Category {
+    public function select(int $id): ?Category {
         $data = null;
         try {
             //PDO object creation.
             $connection = $this->dbConnect->getConnection(); 
             //query preparation.
             $stmt = $connection->prepare($this->queries['SELECT_WHERE_ID']);
-            $stmt->bindValue(':id', $entity->getId(), \PDO::PARAM_INT);
+            $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
             //query execution.
             $success = $stmt->execute(); //bool
             //Statement data recovery.

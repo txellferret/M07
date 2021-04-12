@@ -6,16 +6,19 @@ namespace proven\store\controllers;
 require_once 'lib/ViewLoader.php';
 require_once 'lib/UserFormValidation.php';
 require_once 'lib/CategoryFormValidation.php';
+require_once 'lib/ProductFormValidation.php';
 
 require_once 'model/StoreModel.php';
 require_once 'model/User.php';
 require_once 'model/Category.php';
+require_once 'model/Product.php';
 
 
 use proven\store\model\StoreModel as Model;
 use proven\lib\ViewLoader as View;
 use proven\lib\UserFormValidation as UserFormValidation;
 use proven\lib\CategoryFormValidation as CategoryFormValidation;
+use proven\lib\ProductformValidation as ProductformValidation;
 
 /**
  * Main controller
@@ -138,8 +141,29 @@ class MainController {
             case 'addCategory': 
                 $this->addCategory();
                 break;
+            case 'category/edit':
+                $this->categoryEditForm("edit");
+                break;
+            case 'editCategory':
+                $this->editCategory();
+                break;
+            case 'product/category':
+                $this->listProductsByCategory();
+                break;
             case 'deleteProduct':
                 $this->deleteProduct();
+                break;
+            case 'product/add':
+                $this->productEditForm("add");
+                break;
+            case 'product/edit':
+                $this->productEditForm("edit");
+                break;
+            case 'addProduct':
+                $this->addProduct();
+                break;
+            case 'editProduct':
+                $this->editProduct();
                 break;
             case 'userLogin':
                 $this->doLogin();
@@ -298,6 +322,13 @@ class MainController {
     }
 
     private function categoryEditForm(string $mode) {
+        if ($mode == "edit") {
+            $idCat= \filter_input(INPUT_POST, "idCategory", FILTER_SANITIZE_NUMBER_INT);
+            $result = $this->model->findCategoryById($idCat);
+            if (!is_null($result)) {
+                $data['catToModify'] = $result;
+            }
+        }
         $data['action'] = $mode;
         $this->view->show("category/categoryForm.php", $data);  
     }
@@ -322,6 +353,32 @@ class MainController {
         $this->view->show("category/categoryForm.php", $data);  
     }
 
+    private function editCategory() {
+        $idCat= \filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
+        $c = CategoryFormValidation::getData();
+        $c->setId($idCat);
+
+        $result = null;
+        if ($c === null) {
+            $result = "Error reading category";
+        }else {
+            $result = $this->model->editCategory($c);
+            if ($result) {
+                $result = "Category successfully updated";
+            } else {
+                $result = "Error updating category";
+            }        
+
+        }
+         //pass data to template.
+         $data['result'] = $result;
+         $data['action'] = 'edit';
+         //show the template with the given data.
+         $this->view->show("category/categoryForm.php", $data); 
+
+
+    }
+
 
     /* ============== PRODUCT MANAGEMENT CONTROL METHODS ============== */
 
@@ -335,6 +392,21 @@ class MainController {
         $this->view->show("product/productmanage.php", ['list' => $result]);
     }
 
+    private function listProductsByCategory() {
+        //get category sent from client to search.
+        $categorytoSearch = \filter_input(INPUT_POST, "category_id", FILTER_SANITIZE_NUMBER_INT);
+        if ($categorytoSearch !== false) {
+            //get products with that category.
+            $result = $this->model->findProductsByCategory($categorytoSearch);
+            //pass list to view and show.
+            $this->view->show("product/productmanage.php", ['list' => $result]);   
+        }  else {
+            //pass information message to view and show.
+            $this->view->show("product/productmanage.php", ['message' => "No data found"]);   
+        }
+
+    }
+
     private function deleteProduct() {
         $data = null;
         $id = filter_input(INPUT_POST, 'id'); 
@@ -345,10 +417,67 @@ class MainController {
         } else {
             $data['result'] = "Error deleting product";
             $this->view->show("product/productmanage.php", $data);
-        }
-        
+        }  
+    }
 
-        
+    private function productEditForm (string $mode) {
+        if ($mode == "edit") {
+            $idProd = \filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
+            $result = $this->model->findProductById($idProd);
+            if (!is_null($result)) {
+                $data['productToModify'] = $result;
+            }
+        }
+        $data['listCategories'] = array(1, 2, 3, 4, 5); //TODO: query to DB
+        $data['action'] = $mode;
+        $this->view->show("product/productForm.php", $data);  
+    }
+
+    private function addProduct () {
+            $p = ProductFormValidation::getData();
+            $result = null;
+            if ($p === null) {
+                $result = "Error reading product";
+            } else {
+                $result = $this->model->addProduct($p);
+                if ($result) {
+                    $result = "Product successfully added";
+                } else {
+                    $result = "Error adding product";
+                }            
+            }
+            //pass data to template.
+            $data['result'] = $result;
+            $data['action'] = 'add';
+            //show the template with the given data.
+            $this->view->show("product/productForm.php", $data); 
+
+    }
+
+    private function editProduct() {
+        $idProd = \filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
+        $p = ProductFormValidation::getData();
+        $p->setId($idProd);
+
+        $result = null;
+        if ($p === null) {
+            $result = "Error reading product";
+        }else {
+            $result = $this->model->editProduct($p);
+            if ($result) {
+                $result = "Product successfully updated";
+            } else {
+                $result = "Error updating product";
+            }        
+
+        }
+         //pass data to template.
+         $data['result'] = $result;
+         $data['action'] = 'edit';
+         //show the template with the given data.
+         $this->view->show("product/productForm.php", $data); 
+
+
     }
 
 

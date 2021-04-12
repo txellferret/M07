@@ -31,7 +31,7 @@ EOT;
             <select class="form-control" name="role">
                 <?php 
                 foreach ($roles as $v) {
-                    echo "<option>".$v."</option>";
+                    echo "<option value='".$v."'>".$v."</option>";
                 }
                ?>
             </select>

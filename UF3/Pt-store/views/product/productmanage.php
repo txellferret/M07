@@ -2,9 +2,10 @@
 <h2>Product management page</h2>
 <form action="" method="post">
     <label for="role">Category to search:</label>
-    <input type="number" name="category_id" id="category_id">
-    <button type="submit" name="search">Search</button>
-    <button type="submit" name="add">Add</button>
+    <input type="number" name="category_id" id="category_id" value="">
+
+    <button type="submit" name="action" value="product/category">Search</button>
+    <button type="submit" name="action" value="product/add">Add</button>
 </form>
 <!--list of users-->
 <?php
@@ -44,7 +45,7 @@ EOT;
                 <td>
                 <form action="index.php"  method="post">
                     <input type='text' hidden name ="id" value="{$elem->getId()}">
-                    <button class ="btn btn-primary" type="submit"  name="action" value="editProduct">Edit</button>
+                    <button class ="btn btn-primary" type="submit"  name="action" value="product/edit">Edit</button>
                     <button class ="btn btn-danger" type="submit" onclick="return confirmDialog()" name="action" value="deleteProduct">Delete</button>
                 </form>
 

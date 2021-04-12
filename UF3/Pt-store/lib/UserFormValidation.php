@@ -48,8 +48,7 @@ class UserFormValidation {
 
 
        
-        $userObj = new User(0, $username, $password, $role, $name, $surname);
-            
+        $userObj = new User(0, $username, $password, $name, $surname, $role);
      
         return $userObj;
     }
