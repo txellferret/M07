@@ -84,6 +84,14 @@ class StoreModel {
         return $data;
     }
 
+    public function deleteCategory($id) {
+        $data = false;
+        $dbHelper = new CategoryDao();
+        $data = $dbHelper->delete($id);
+        return $data;
+
+    }
+
 
 
     /******************PRODUCTS***************** */

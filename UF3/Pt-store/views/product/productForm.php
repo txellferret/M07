@@ -62,6 +62,6 @@ EOT;
         echo "<button type='submit' class='btn btn-primary' name ='action' value='editProduct'>Edit Product</button>";
     }
     ?>
-    <button type="button" class="btn btn-secondary"><a href ="index.php" style="color: white; text-decoration: none">Cancel</a></button> 
+    <button type="button" class="btn btn-secondary"><a href ="index.php?action=product" style="color: white; text-decoration: none">Cancel</a></button> 
     
 </form>

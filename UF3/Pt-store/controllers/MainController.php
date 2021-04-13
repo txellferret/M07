@@ -147,6 +147,9 @@ class MainController {
             case 'editCategory':
                 $this->editCategory();
                 break;
+            case 'deleteCategory':
+                $this->deleteCategory();
+                break;
             case 'product/category':
                 $this->listProductsByCategory();
                 break;
@@ -375,7 +378,19 @@ class MainController {
          $data['action'] = 'edit';
          //show the template with the given data.
          $this->view->show("category/categoryForm.php", $data); 
+    }
 
+    private function deleteCategory() {
+        $data = null;
+        $id = filter_input(INPUT_POST, 'id'); 
+        
+        $result = $this->model->deleteCategory($id);
+        if ($result) {
+            $this->categoryMng();
+        } else {
+            $data['result'] = "Error deleting category";
+            $this->view->show("category/categorymanage.php", $data);
+        }  
 
     }
 
