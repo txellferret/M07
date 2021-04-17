@@ -229,7 +229,7 @@ class CategoryDao {
      * @param id the id object to delete.
      * @return number of rows affected.
      */
-    public function delete($id): int {
+    public function delete($id) : int {
         $numAffected = 0;
         try {
             //PDO object creation.
@@ -249,9 +249,12 @@ class CategoryDao {
                 } 
             } 
         } catch (\PDOException $e) {
+            /*
             print "Error Code <br>".$e->getCode();
             print "Error Message <br>".$e->getMessage();
             print "Strack Trace <br>".nl2br($e->getTraceAsString());
+            */
+            return $numAffected;
         }   
 
         return $numAffected;

@@ -42,10 +42,31 @@ class StoreModel {
         return $dbHelper->selectByRole($role);
     }
 
-    function addUser(User $user) {
+    public function addUser(User $user) {
         $data = false;
         $dbHelper = new UserDao();
         $data = $dbHelper->insert($user);
+        return $data;
+
+    }
+
+    public function findUserById($id) {
+        $dbHelper = new UserDao();
+        return $dbHelper->select($id);
+
+    }
+
+    public function editUser (User $user) {
+        $data = false;
+        $dbHelper = new UserDao();
+        $data = $dbHelper->update($user);
+        return $data;
+    }
+
+    public function deleteUser($id) {
+        $data = false;
+        $dbHelper = new UserDao();
+        $data = $dbHelper->delete($id);
         return $data;
 
     }

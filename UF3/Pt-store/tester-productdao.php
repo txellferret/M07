@@ -7,9 +7,16 @@ use proven\store\model\persist\ProductDao;
 use proven\store\model\Product;
 
 $dao = new ProductDao();
+
+echo "Select all: <br>";
 //print_r($dao->selectAll());
-//print_r($dao->select(new Product(1)));
-var_dump($dao->selectByCategory(5));
+echo "<br><br>Select product id=1: <br>";
+//print_r($dao->select(1));
+echo "<br><br>Select product by category id =1: <br>";
+print_r($dao->selectByCategory(1));
+echo "<br><br>Insert product: <br>";
 //print_r($dao->insert(new Product(0, "code00", "desc0")));
+echo "<br><br>Edit product: <br>";
 //print_r($dao->update(new Product(6, "codeNew", "descNew")));
-//print_r($dao->delete(new Product(6)));
+echo "<br><br>Delete product: <br>";
+//print_r($dao->delete(6));

@@ -10,6 +10,12 @@
 
 
 <?php
+$result = $params['result'] ?? null;
+if (!is_null($result)) {
+    echo <<<EOT
+    <div><p class="alert">$result</p></div>
+EOT;
+}  
 //display list in a table.
 $list = $params['list'] ?? null;
 if (isset($list)) {

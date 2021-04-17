@@ -77,7 +77,7 @@ A partir de php 7, a una funcio li podem dir de quin tipus es el parametre.
 03/11/20
 Com que cada peticio cap al servidor es independent de una altra, ja que diversos PC poden fer moltes peticions a la vegada, ens cal una manera d'identificar el client.
 
-COOKIE
+**COOKIE**
 Informacio en format text que el servidor envia al client i el client ho guarda a la memoria del navegador.
 Quan el client torna a enviar la peticio, a la capcelera posa la cookie. Es una manera didentificar el client per part del servidor. 
 Hi ha un array associatiu per les cookies: $_COOKIES
@@ -97,14 +97,13 @@ Una cookie s'esborra fent que caduqui, i li posem un temps de vida anterior al a
 Cada vegada que refresquem la pag la data de caducitat es renova.
 La data de caducitat es obligatoria i es posa en segons. 
 
-Sessions
+**Sessions**
 Les sessions s'utilitzen per preservar dades entre successives peticions del mateix client. 
 Serveix per guardar dades del client pero al servidor.
 Cada sessió té associat un identificador únic i un espai de memòria per a emmagatzemar variables de sessió. Aquestes variables són accessibles en PHP amb l'array associatiu superglobal $_SESSION. 
 
 
-
-*********************POO**************************
+## POO
 Les classes:
 El nom del fitxer i de la la classe no cal que sigui igual com a Java: exemple: person.class.php i class Person {}
 Només hi ha un contructor: _construct.
@@ -126,7 +125,7 @@ No te res a vure amb el directori (com si els paquets de Java)
 
 22/01/2021
 
-UF2. Arquitectura client servidor
+### UF2. Arquitectura client servidor
 Sempre per obrir fitxers es  millor en binari, per evitar conflicte en editors.
 -> Servix quan donat un obj accedir a una propietat daquell obj
 
@@ -134,8 +133,7 @@ feof marca el final del fitxer quan hi hem arribat, quan hem Intentat llegir i n
 
 self:: per accedir (el nom de la classe = self) a un atribut estatic o constant = fa referencia a un classe, en canvi this fa referencia a un obj, cal haver fet un new abans.
 
-
-*********************MVC**************************
+## MVC
 Les peticions sempre a index.html.
 
 
@@ -146,13 +144,83 @@ La PDO te una capa de absatraccio mes gran i permet programar la mateixa base de
 
 
 09/04/2021
-Aplications hibrides
+## LARAVEL
+Aplications hibrides: https://www.fhios.es/ca/desenvolupant-apps-hibrides-natives/
 
 /****rutes anidables***/
 composer es un gestor de paquets per php
 localhost/app/user/name -> ruta anidables, tot amb barres. Es el que fan servir els webservices
 
 cal dir a apache q instali un modul q sigui capaç de interpretar les rutes anidables: sudo a2enmod rewrite
+
+
+16/04/2021
+LARAVEL es un framework que permet implementar l'arquitectura MVC en php i tambe el mapeig obj-relacional.
+Estructura de directoris del projecte Laravel:
+- public: dir arrel
+- config
+- storage i bootstrap/cache: cal que el servidor web tingui permisos descriptura a aquestes carpetes
+
+.htaccess es posa en cada dir de laplicacio o com a min a larrel i defineix permisos a cada directori. Es el que mira apache per accedir els dir.
+
+URL no amigable: localhost/myapp/index.php?action=list_all_products
+URL amigable: localhost/myapp/products/all
+
+En el segon cas no li diem quin fitxer php executar. Aixo funciona amb el modul activat rewrite. Cal definir un mapeig per traduir una ruta a una altra. Es fa dintre del fitxer htaccess
+
+
+**SINTAXIS LARAVEL**
+Conecta automaticament la vista, html amb el control -> Blade
+{{ $user->name }} : injection,permet injectar una variable dintre de la vista
+
+@if - @endif : per si volem que elements es vegin o n, com el ngIf* de angular
+@foreach - @endforeach
+
+*Directives:
+@yield: directiva per definir la posicio duna seccio en una plantilla
+@extends: la vista que estic creant es una extencio dun altre, es base en lesquema predefinit abans. Aixi canviant lesquema general es canvien totes
+@section: defineix una secccio que anira colocada on posi @yield
+
+
+*Generar fixers
+php artisan make:controller nom-controlador
+
+*Rutes
+Es defineixen en el fitxer app/Http/routes.php
+- Rutes amb funcions anonimes:
+  
+
+```Route::get('/', function(){
+	return view('welcome');
+}
+```
+
+- Rutes amb controladors 
+
+```Route::get('notes', [NotesController::class, index')];```
+
+Veure les rutes: ```php artisan route:list```
+
+La funcio Request() per obtenir les dades enviades en una petició.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

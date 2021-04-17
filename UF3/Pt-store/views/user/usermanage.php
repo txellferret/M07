@@ -7,6 +7,10 @@
     <button type="submit" name="action" value="user/role">Search</button>
     <button type="submit" name="action" value="user/add">Add</button>
 </form>
+<form id ="userForm" action="index.php" method="post" >
+    <input type='text' id ="idUser" name ="idUser" value="" hidden>
+    <input name="action" hidden="hidden" value="user/edit"/>
+</form>
 
 
 <!--list of users-->
@@ -28,7 +32,7 @@ EOT;
     // $params contains variables passed in from the controller.
     foreach ($list as $elem) {
         echo <<<EOT
-            <tr>
+            <tr id='{$elem->getId()}' class='clickable-row'>
                 <td>{$elem->getUsername()}</td>
                 <td>{$elem->getFirstname()} {$elem->getLastname()}</td>
                 <td>{$elem->getRole()}</td>
@@ -43,3 +47,13 @@ EOT;
 } else {
     echo "No data found";
 }
+?>
+<script>
+jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        var idUsr = $(this).attr('id');
+        $("#idUser").val(idUsr)
+        $("#userForm").submit();
+    });
+});
+</script>

@@ -7,9 +7,9 @@
     </div>
     <div>
       <ul class="nav navbar-nav">
-        <li class="active"><a class="nav-link" href="index.php?action=home">Home</a></li>
-        <li><a class="nav-link" href="index.php?action=user">Users</a></li>
-        <li><a class="nav-link" href="index.php?action=category">Categories</a></li>
+        <li><a class="nav-link" href="index.php?action=home">Home</a></li>
+        <li><a class="nav-link" <?php if (!isset($_SESSION['userRole']) || ($_SESSION['userRole']=='registered')) echo 'style="display: none;' ;?> href="index.php?action=user">Users</a></li>
+        <li><a class="nav-link" <?php if (!isset($_SESSION['userRole'])) echo 'style="display: none;' ;?> href="index.php?action=category">Categories</a></li>
         <li><a class="nav-link" href="index.php?action=product">Products</a></li>
       </ul>
     </div>
@@ -26,4 +26,3 @@
     ?>
   </div>
 </nav>
-

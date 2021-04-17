@@ -135,6 +135,15 @@ class MainController {
             case 'addUser':
                 $this->addUser();
                 break;
+            case 'user/edit':
+                $this->userEditForm("edit");
+                break;
+            case 'editUser':
+                $this->editUser();
+                break;
+            case 'deleteUser':
+                $this->deleteUser();
+                break;
             case 'category/add':
                 $this->categoryEditForm("add");
                 break;
@@ -281,6 +290,14 @@ class MainController {
      */
     private function userEditForm(string $mode) {
         $data['listRoles'] = array("admin", "registered"); //TODO: query to DB
+
+        if ($mode == "edit") {
+            $idUsr= \filter_input(INPUT_POST, "idUser", FILTER_SANITIZE_NUMBER_INT);
+            $result = $this->model->findUserById($idUsr);
+            if (!is_null($result)) {
+                $data['usrToModify'] = $result;
+            }
+        }
         $data['action'] = $mode;
         $this->view->show("user/userForm.php", $data);  
     }
@@ -289,7 +306,8 @@ class MainController {
      * Adds a user to DB
      */
     private function addUser() {
-        $u = UserFormValidation::getData();
+        if (isset($_SESSION['userRole']) && ($_SESSION['userRole'])== "admin"){
+            $u = UserFormValidation::getData();
             $result = null;
             if ($u === null) {
                 $result = "Error reading user";
@@ -306,10 +324,61 @@ class MainController {
             $data['action'] = 'add';
             //show the template with the given data.
             $this->view->show("user/userForm.php", $data);  
-
-
+        }else {
+            header("Location: index.php" );
+        }
+        
     }
 
+    private function editUser() {
+        if (isset($_SESSION['userRole']) && ($_SESSION['userRole'])== "admin"){
+            $idUsr= \filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
+            $u = UserFormValidation::getData();
+            $u->setId($idUsr);
+
+            $result = null;
+            if ($u === null) {
+                $result = "Error reading user";
+            }else {
+                $result = $this->model->editUser($u);
+                if ($result) {
+                    $result = "User successfully updated";
+                } else {
+                    $result = "Error updating user";
+                }        
+
+            }
+            //pass data to template.
+            $data['result'] = $result;
+            $data['action'] = 'edit';
+            //show the template with the given data.
+            $this->view->show("user/userForm.php", $data); 
+        
+        }else {
+            header("Location: index.php" );
+        }
+        
+    }
+
+    public function deleteUser() {
+        if (isset($_SESSION['userRole']) && ($_SESSION['userRole'])== "admin"){
+            $data = null;
+            $id = filter_input(INPUT_POST, 'id'); 
+            
+            $result = $this->model->deleteUser($id);
+            if ($result) {
+                $this->userMng();
+            } else {
+                $data['result'] = "Error deleting user";
+                $this->view->show("user/usermanage.php", $data);
+            }  
+
+        }else {
+            header("Location: index.php" );
+        }
+
+        
+    }
    
 
     /* ============== CATEGORY MANAGEMENT CONTROL METHODS ============== */
@@ -337,61 +406,77 @@ class MainController {
     }
     
     private function addCategory() {
-        $c = CategoryFormValidation::getData();
-        $result = null;
-        if ($c === null) {
-            $result = "Error reading category";
-        } else {
-            $result = $this->model->addCategory($c);
-            if ($result) {
-                $result = "Category successfully added";
+        if (isset($_SESSION['nameUser'])){
+            $c = CategoryFormValidation::getData();
+            $result = null;
+            if ($c === null) {
+                $result = "Error reading category";
             } else {
-                $result = "Error adding category";
-            }            
+                $result = $this->model->addCategory($c);
+                if ($result) {
+                    $result = "Category successfully added";
+                } else {
+                    $result = "Error adding category";
+                }            
+            }
+            //pass data to template.
+            $data['result'] = $result;
+            $data['action'] = 'add';
+            //show the template with the given data.
+            $this->view->show("category/categoryForm.php", $data);  
+
+        }else {
+            header("Location: index.php" );
         }
-        //pass data to template.
-        $data['result'] = $result;
-        $data['action'] = 'add';
-        //show the template with the given data.
-        $this->view->show("category/categoryForm.php", $data);  
+        
     }
 
     private function editCategory() {
-        $idCat= \filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
-        $c = CategoryFormValidation::getData();
-        $c->setId($idCat);
+        if(isset($_SESSION['nameUser'])){
+            $idCat= \filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
+            $c = CategoryFormValidation::getData();
+            $c->setId($idCat);
 
-        $result = null;
-        if ($c === null) {
-            $result = "Error reading category";
+            $result = null;
+            if ($c === null) {
+                $result = "Error reading category";
+            }else {
+                $result = $this->model->editCategory($c);
+                if ($result) {
+                    $result = "Category successfully updated";
+                } else {
+                    $result = "Error updating category";
+                }        
+
+            }
+            //pass data to template.
+            $data['result'] = $result;
+            $data['action'] = 'edit';
+            //show the template with the given data.
+            $this->view->show("category/categoryForm.php", $data);
         }else {
-            $result = $this->model->editCategory($c);
-            if ($result) {
-                $result = "Category successfully updated";
-            } else {
-                $result = "Error updating category";
-            }        
-
+            header("Location: index.php" );
         }
-         //pass data to template.
-         $data['result'] = $result;
-         $data['action'] = 'edit';
-         //show the template with the given data.
-         $this->view->show("category/categoryForm.php", $data); 
+         
     }
 
     private function deleteCategory() {
-        $data = null;
-        $id = filter_input(INPUT_POST, 'id'); 
-        
-        $result = $this->model->deleteCategory($id);
-        if ($result) {
-            $this->categoryMng();
-        } else {
-            $data['result'] = "Error deleting category";
-            $this->view->show("category/categorymanage.php", $data);
-        }  
+        if(isset($_SESSION['nameUser'])){
+            $data = null;
+            $id = filter_input(INPUT_POST, 'id'); 
+            
+            $result = $this->model->deleteCategory($id);
+            if ($result) {
+                $this->categoryMng();
+            } else {
+                $data['result'] = "Error deleting category";
+                $this->view->show("category/categorymanage.php", $data);
+            }  
 
+        }else {
+            header("Location: index.php" );
+        }
+        
     }
 
 
@@ -423,16 +508,20 @@ class MainController {
     }
 
     private function deleteProduct() {
-        $data = null;
-        $id = filter_input(INPUT_POST, 'id'); 
-        
-        $result = $this->model->deleteProduct($id);
-        if ($result) {
-            $this->productMng();
+        if(isset($_SESSION['nameUser'])){
+            $data = null;
+            $id = filter_input(INPUT_POST, 'id'); 
+            
+            $result = $this->model->deleteProduct($id);
+            if ($result) {
+                $this->productMng();
+            } else {
+                $data['result'] = "Error deleting product";
+                $this->view->show("product/productmanage.php", $data);
+            }
         } else {
-            $data['result'] = "Error deleting product";
-            $this->view->show("product/productmanage.php", $data);
-        }  
+            header("Location: index.php" );
+        }
     }
 
     private function productEditForm (string $mode) {
@@ -449,6 +538,7 @@ class MainController {
     }
 
     private function addProduct () {
+        if(isset($_SESSION['nameUser'])){
             $p = ProductFormValidation::getData();
             $result = null;
             if ($p === null) {
@@ -466,34 +556,37 @@ class MainController {
             $data['action'] = 'add';
             //show the template with the given data.
             $this->view->show("product/productForm.php", $data); 
-
+        }else {
+            header("Location: index.php" );
+        }
     }
 
     private function editProduct() {
-        $idProd = \filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
-        $p = ProductFormValidation::getData();
-        $p->setId($idProd);
+        if(isset($_SESSION['nameUser'])){
+            $idProd = \filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
+            $p = ProductFormValidation::getData();
+            $p->setId($idProd);
 
-        $result = null;
-        if ($p === null) {
-            $result = "Error reading product";
-        }else {
-            $result = $this->model->editProduct($p);
-            if ($result) {
-                $result = "Product successfully updated";
-            } else {
-                $result = "Error updating product";
-            }        
+            $result = null;
+            if ($p === null) {
+                $result = "Error reading product";
+            }else {
+                $result = $this->model->editProduct($p);
+                if ($result) {
+                    $result = "Product successfully updated";
+                } else {
+                    $result = "Error updating product";
+                }        
 
+            }
+            //pass data to template.
+            $data['result'] = $result;
+            $data['action'] = 'edit';
+            //show the template with the given data.
+            $this->view->show("product/productForm.php", $data); 
+
+        } else {
+            header("Location:index.php");
         }
-         //pass data to template.
-         $data['result'] = $result;
-         $data['action'] = 'edit';
-         //show the template with the given data.
-         $this->view->show("product/productForm.php", $data); 
-
-
     }
-
-
 }
