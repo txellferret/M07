@@ -261,8 +261,13 @@ class MainController {
     private function userMng() {
         //get all users.
         $result = $this->model->findAllUsers();
+        if ($result == -1) {
+            $r['error'] = "Not possible to connect with DB";
+        }else {
+            $r['list'] = $result;
+        }
         //pass list to view and show.
-        $this->view->show("user/usermanage.php", ['list' => $result]);        
+        $this->view->show("user/usermanage.php", $r);        
         //$this->view->show("user/user.php", [])  //initial prototype version;
     }
 
@@ -275,8 +280,15 @@ class MainController {
         if ($roletoSearch !== false) {
             //get users with that role.
             $result = $this->model->findUsersByRole($roletoSearch);
-            //pass list to view and show.
-            $this->view->show("user/usermanage.php", ['list' => $result]);   
+            if ($result == -1) {
+                $r['error'] = "Not possible to connect with DB";
+            }else {
+                //pass list to view and show.
+                $r['list'] = $result;
+               
+            }
+            $this->view->show("user/usermanage.php", $r);     
+           
         }  else {
             //pass information message to view and show.
             $this->view->show("user/usermanage.php", ['message' => "No data found"]);   
@@ -294,7 +306,10 @@ class MainController {
         if ($mode == "edit") {
             $idUsr= \filter_input(INPUT_POST, "idUser", FILTER_SANITIZE_NUMBER_INT);
             $result = $this->model->findUserById($idUsr);
-            if (!is_null($result)) {
+            if($result == -1 ){
+                $data['error'] = "Not possible to connect with DB";
+            }
+            elseif (!is_null($result)) {
                 $data['usrToModify'] = $result;
             }
         }
@@ -313,14 +328,19 @@ class MainController {
                 $result = "Error reading user";
             } else {
                 $result = $this->model->addUser($u);
-                if ($result) {
-                    $result = "User successfully added";
-                } else {
-                    $result = "Error adding user";
-                }            
+                if($result == -1 ){
+                    $data['error'] = "Not possible to connect with DB";
+                }else {
+                    if ($result ) {
+                        $result = "User successfully added";
+                    } else {
+                        $result = "Error adding user";
+                    } 
+                    //pass data to template.
+                    $data['result'] = $result;  
+                }
             }
-            //pass data to template.
-            $data['result'] = $result;
+           
             $data['action'] = 'add';
             //show the template with the given data.
             $this->view->show("user/userForm.php", $data);  
@@ -341,15 +361,19 @@ class MainController {
                 $result = "Error reading user";
             }else {
                 $result = $this->model->editUser($u);
-                if ($result) {
-                    $result = "User successfully updated";
-                } else {
-                    $result = "Error updating user";
+                if($result == -1 ){
+                    $data['error'] = "Not possible to connect with DB";
+                }else {
+                    if ($result) {
+                        $result = "User successfully updated";
+                    } else {
+                        $result = "Error updating user";
+                    }
+                    //pass data to template.
+                    $data['result'] = $result;
                 }        
 
             }
-            //pass data to template.
-            $data['result'] = $result;
             $data['action'] = 'edit';
             //show the template with the given data.
             $this->view->show("user/userForm.php", $data); 
@@ -361,17 +385,23 @@ class MainController {
     }
 
     public function deleteUser() {
+
         if (isset($_SESSION['userRole']) && ($_SESSION['userRole'])== "admin"){
             $data = null;
             $id = filter_input(INPUT_POST, 'id'); 
             
             $result = $this->model->deleteUser($id);
-            if ($result) {
-                $this->userMng();
-            } else {
-                $data['result'] = "Error deleting user";
+            if($result == -1 ){
+                $data['error'] = "Not possible to connect with DB";
                 $this->view->show("user/usermanage.php", $data);
-            }  
+            }else {
+                if ($result) {
+                    $this->userMng();
+                } else {
+                    $data['result'] = "Error deleting user";
+                    $this->view->show("user/usermanage.php", $data);
+                }
+            }
 
         }else {
             header("Location: index.php" );
@@ -389,20 +419,31 @@ class MainController {
     private function categoryMng() {
         //get all categories.
         $result = $this->model->findAllCategories();
+        if ($result == -1) {
+            $r['error'] = "Not possible to connect with DB";
+        }else {
+            $r['list'] = $result;
+        }
         //pass list to view and show.
-        $this->view->show("category/categorymanage.php", ['list' => $result]);
+        $this->view->show("category/categorymanage.php", $r);        
+        
     }
 
     private function categoryEditForm(string $mode) {
         if ($mode == "edit") {
             $idCat= \filter_input(INPUT_POST, "idCategory", FILTER_SANITIZE_NUMBER_INT);
             $result = $this->model->findCategoryById($idCat);
-            if (!is_null($result)) {
+            if($result == -1 ){
+                $data['error'] = "Not possible to connect with DB";
+            }
+            elseif (!is_null($result)) {
                 $data['catToModify'] = $result;
             }
+            
         }
         $data['action'] = $mode;
-        $this->view->show("category/categoryForm.php", $data);  
+        $this->view->show("category/categoryForm.php", $data);
+        
     }
     
     private function addCategory() {
@@ -413,18 +454,24 @@ class MainController {
                 $result = "Error reading category";
             } else {
                 $result = $this->model->addCategory($c);
-                if ($result) {
-                    $result = "Category successfully added";
-                } else {
-                    $result = "Error adding category";
-                }            
+                if($result == -1 ){
+                    $data['error'] = "Not possible to connect with DB";
+                }else {
+                
+                    if ($result) {
+                        $result = "Category successfully added";
+                    } else {
+                        $result = "Error adding category";
+                    }  
+                    //pass data to template.
+                    $data['result'] = $result;  
+
+                }          
             }
-            //pass data to template.
-            $data['result'] = $result;
             $data['action'] = 'add';
             //show the template with the given data.
-            $this->view->show("category/categoryForm.php", $data);  
-
+            $this->view->show("category/categoryForm.php", $data);
+            
         }else {
             header("Location: index.php" );
         }
@@ -442,18 +489,25 @@ class MainController {
                 $result = "Error reading category";
             }else {
                 $result = $this->model->editCategory($c);
-                if ($result) {
-                    $result = "Category successfully updated";
-                } else {
-                    $result = "Error updating category";
-                }        
+                if($result == -1 ){
+                    $data['error'] = "Not possible to connect with DB";
+                }else {
+                    if ($result) {
+                        $result = "Category successfully updated";
+                    } else {
+                        $result = "Error updating category";
+                    }
+                    //pass data to template.
+                    $data['result'] = $result;
+
+                }
+                        
 
             }
-            //pass data to template.
-            $data['result'] = $result;
             $data['action'] = 'edit';
             //show the template with the given data.
-            $this->view->show("category/categoryForm.php", $data);
+            $this->view->show("category/categoryForm.php", $data); 
+        
         }else {
             header("Location: index.php" );
         }
@@ -466,12 +520,18 @@ class MainController {
             $id = filter_input(INPUT_POST, 'id'); 
             
             $result = $this->model->deleteCategory($id);
-            if ($result) {
-                $this->categoryMng();
-            } else {
-                $data['result'] = "Error deleting category";
-                $this->view->show("category/categorymanage.php", $data);
-            }  
+            if($result == -1 ){
+                $data['error'] = "Not possible to connect with DB";
+                $this->view->show("user/usermanage.php", $data);
+            }else {
+                if ($result) {
+                    $this->categoryMng();
+                } else {
+                    $data['result'] = "Error deleting category";
+                    $this->view->show("category/categorymanage.php", $data);
+                }
+            }
+              
 
         }else {
             header("Location: index.php" );
@@ -488,8 +548,14 @@ class MainController {
     private function productMng() {
         //get all categories.
         $result = $this->model->findAllProducts();
+        if ($result == -1) {
+            $r['error'] = "Not possible to connect with DB";
+        }else {
+            $r['list'] = $result;
+        }
         //pass list to view and show.
-        $this->view->show("product/productmanage.php", ['list' => $result]);
+        $this->view->show("product/productmanage.php", $r);  
+       
     }
 
     private function listProductsByCategory() {
@@ -498,8 +564,15 @@ class MainController {
         if ($categorytoSearch !== false) {
             //get products with that category.
             $result = $this->model->findProductsByCategory($categorytoSearch);
-            //pass list to view and show.
-            $this->view->show("product/productmanage.php", ['list' => $result]);   
+            if ($result == -1) {
+                $r['error'] = "Not possible to connect with DB";
+            }else {
+                //pass list to view and show.
+                $r['list'] = $result;
+               
+            }
+            $this->view->show("product/productmanage.php", $r);     
+            
         }  else {
             //pass information message to view and show.
             $this->view->show("product/productmanage.php", ['message' => "No data found"]);   
@@ -513,30 +586,45 @@ class MainController {
             $id = filter_input(INPUT_POST, 'id'); 
             
             $result = $this->model->deleteProduct($id);
-            if ($result) {
-                $this->productMng();
-            } else {
-                $data['result'] = "Error deleting product";
+            if($result == -1 ){
+                $data['error'] = "Not possible to connect with DB";
                 $this->view->show("product/productmanage.php", $data);
+            }else {
+                if ($result) {
+                    $this->productMng();
+                } else {
+                    $data['result'] = "Error deleting product";
+                    $this->view->show("product/productmanage.php", $data);
+                }
             }
         } else {
             header("Location: index.php" );
         }
     }
-
+    /**
+     * Shows product form
+     * @param mode: if form is to add or modify
+     */
     private function productEditForm (string $mode) {
         if ($mode == "edit") {
             $idProd = \filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
             $result = $this->model->findProductById($idProd);
-            if (!is_null($result)) {
+            if($result == -1 ){
+                $data['error'] = "Not possible to connect with DB";
+            }
+            elseif (!is_null($result)) {
                 $data['productToModify'] = $result;
             }
+            
         }
         $data['listCategories'] = array(1, 2, 3, 4, 5); //TODO: query to DB
         $data['action'] = $mode;
         $this->view->show("product/productForm.php", $data);  
     }
 
+    /**
+     * Adds product to DB
+     */
     private function addProduct () {
         if(isset($_SESSION['nameUser'])){
             $p = ProductFormValidation::getData();
@@ -545,14 +633,20 @@ class MainController {
                 $result = "Error reading product";
             } else {
                 $result = $this->model->addProduct($p);
-                if ($result) {
-                    $result = "Product successfully added";
-                } else {
-                    $result = "Error adding product";
+                if($result == -1 ){
+                    $data['error'] = "Not possible to connect with DB";
+                }else {
+                    if ($result) {
+                        $result = "Product successfully added";
+                    } else {
+                        $result = "Error adding product";
+                    }
+                    //pass data to template.
+                    $data['result'] = $result;
+
                 }            
             }
-            //pass data to template.
-            $data['result'] = $result;
+            
             $data['action'] = 'add';
             //show the template with the given data.
             $this->view->show("product/productForm.php", $data); 
@@ -572,15 +666,19 @@ class MainController {
                 $result = "Error reading product";
             }else {
                 $result = $this->model->editProduct($p);
-                if ($result) {
-                    $result = "Product successfully updated";
-                } else {
-                    $result = "Error updating product";
-                }        
-
+                if($result == -1 ){
+                    $data['error'] = "Not possible to connect with DB";
+                }else {
+                    if ($result) {
+                        $result = "Product successfully updated";
+                    } else {
+                        $result = "Error updating product";
+                    }       
+                    //pass data to template.
+                    $data['result'] = $result; 
+                }
             }
-            //pass data to template.
-            $data['result'] = $result;
+            
             $data['action'] = 'edit';
             //show the template with the given data.
             $this->view->show("product/productForm.php", $data); 

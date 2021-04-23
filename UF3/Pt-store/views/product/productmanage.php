@@ -19,6 +19,13 @@ if (!is_null($result)) {
     <div><p class="alert">$result</p></div>
 EOT;
 }  
+
+$error = $params['error'] ?? null;
+if (!is_null($error)) {
+    echo <<<EOT
+    <div><p class="alert alert-danger">$error</p></div>
+EOT;
+}  
 $list = $params['list'] ?? null;
 
 if (isset($list)) {

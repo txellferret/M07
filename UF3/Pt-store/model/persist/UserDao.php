@@ -95,7 +95,8 @@ class UserDao {
      * @param entity the entity to search.
      * @return entity object being searched or null if not found or in case of error.
      */
-    public function select(int $id): ?User {
+    public function select(int $id) {
+        $data = null;
         try {
             //PDO object creation.
             $connection = $this->dbConnect->getConnection(); 
@@ -123,10 +124,14 @@ class UserDao {
             }
 
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
-            $data = null;
+            //print "Error Code <br>".$e->getCode();
+            //print "Error Message <br>".$e->getMessage();
+            //print "Strack Trace <br>".nl2br($e->getTraceAsString());
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $data;
+            }
         }   
         return $data;
     }
@@ -136,7 +141,7 @@ class UserDao {
      * @param entity the entity to search.
      * @return entity object being searched or null if not found or in case of error.
      */
-    public function selectUserByUsername($username): ?User {
+    public function selectUserByUsername($username) {
         $data = null;
         try {
             //PDO object creation.
@@ -165,10 +170,11 @@ class UserDao {
             }
 
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
-            $data = null;
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $data;
+            }
         }   
         return $data;
     }
@@ -177,7 +183,7 @@ class UserDao {
      * selects all entitites in database.
      * @return array of entity objects.
      */
-    public function selectAll(): array {
+    public function selectAll() {
         $data = array();
         try {
             //PDO object creation.
@@ -207,15 +213,19 @@ class UserDao {
                 $data = array();
             }
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
-            $data = array();
+            //print "Error Code <br>".$e->getCode();
+            //print "Error Message <br>".$e->getMessage();
+            //print "Strack Trace <br>".nl2br($e->getTraceAsString());
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $data;
+            }
         }   
         return $data;   
     }
 
-    public function selectByRole(String $role): array {
+    public function selectByRole(String $role) {
         $data = array();
         try {
             //PDO object creation.
@@ -242,10 +252,12 @@ class UserDao {
                 $data = array();
             }
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
-            $data = array();
+            
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $data;
+            }
         }   
         return $data;   
     }
@@ -280,9 +292,12 @@ class UserDao {
                 } 
             } 
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
+             
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $numAffected;
+            }
         }   
 
         return $numAffected;
@@ -310,11 +325,11 @@ class UserDao {
             $success = $stmt->execute(); //bool
             $numAffected = $success ? $stmt->rowCount() : 0;
         } catch (\PDOException $e) {
-            //remove in production
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
-            $numAffected = 0;
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $numAffected;
+            }
         }
         return $numAffected;  
     }
@@ -344,9 +359,11 @@ class UserDao {
                 } 
             } 
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $numAffected;
+            }
         }   
 
         return $numAffected;

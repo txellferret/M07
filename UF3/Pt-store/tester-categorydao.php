@@ -19,5 +19,5 @@ print_r($dao->update(new Category(1, "codeNeww", "descNew")));
 echo "<br><br>Delete category: <br>";
 print_r($dao->delete(6));
 
-echo "<br><br>Delete category with products in it: <br>";
+echo "<br><br>Delete category with FK in products table: <br>";
 print_r($dao->delete(1));

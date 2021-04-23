@@ -32,12 +32,12 @@ class StoreModel {
 
     /******************USERS***************** */
    
-    public function findAllUsers(): array {
+    public function findAllUsers() {
         $dbHelper = new UserDao();
         return $dbHelper->selectAll();
     }
     
-    public function findUsersByRole(string $role): array {
+    public function findUsersByRole(string $role) {
         $dbHelper = new UserDao();
         return $dbHelper->selectByRole($role);
     }

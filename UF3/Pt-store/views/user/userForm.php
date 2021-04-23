@@ -5,9 +5,15 @@ $action = $params['action']??null;
 $result = $params['result']??null;
 $userFound = $params['usrToModify']??null;
 
+$error = $params['error'] ?? null;
 if (!is_null($result)) {
     echo <<<EOT
     <div><p class="alert">$result</p></div>
+EOT;
+}
+if (!is_null($error)) {
+    echo <<<EOT
+    <div><p class="alert">$error</p></div>
 EOT;
 }  
 ?>

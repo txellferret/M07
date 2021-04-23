@@ -98,7 +98,7 @@ class ProductDao {
      * @param propertySearch the property to look for
      * @return entity object being searched or null if not found or in case of error.
      */
-    public function select(int $id): ?Product {
+    public function select(int $id) {
         $data = null;
         try {
             //PDO object creation.
@@ -126,10 +126,11 @@ class ProductDao {
             }
 
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
-            $data = null;
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $data;
+            }
         }   
         return $data;
     }
@@ -138,7 +139,7 @@ class ProductDao {
      * selects all entitites in database.
      * @return array of entity objects.
      */
-    public function selectAll(): array {
+    public function selectAll() {
         $data = array();
         try {
             //PDO object creation.
@@ -163,15 +164,20 @@ class ProductDao {
                 $data = array();
             }
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
-            $data = array();
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $data;
+            }
         }   
         return $data;   
     }
-
-    public function selectByCategory(int $category_id) : array {
+/**
+ * Seelcts prodcut given a category id
+ * @param category_id the cat to search
+ * @return array of products, or -1 if error connection
+ */
+    public function selectByCategory(int $category_id)  {
         $data = array();
         try {
             //PDO object creation.
@@ -198,10 +204,11 @@ class ProductDao {
                 $data = array();
             }
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
-            $data = array();
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $data;
+            }
         }   
         return $data;  
     }
@@ -209,9 +216,9 @@ class ProductDao {
     /**
      * inserts a new entity in database.
      * @param entity the entity object to insert.
-     * @return number of rows affected.
+     * @return number of rows affected or -1 if error connection
      */
-    public function insert(Product $entity): int {
+    public function insert(Product $entity) {
         $numAffected = 0;
         try {
             //PDO object creation.
@@ -236,9 +243,11 @@ class ProductDao {
                 } 
             } 
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $numAffected;
+            }
         }   
 
         return $numAffected;
@@ -247,9 +256,9 @@ class ProductDao {
     /**
      * updates entity in database.
      * @param entity the entity object to update.
-     * @return number of rows affected.
+     * @return number of rows affected or -1 if error connection
      */
-    public function update(Product $entity): int {
+    public function update(Product $entity) {
         $numAffected = 0;
         try {
             //PDO object creation.
@@ -266,11 +275,11 @@ class ProductDao {
             $success = $stmt->execute(); //bool
             $numAffected = $success ? $stmt->rowCount() : 0;
         } catch (\PDOException $e) {
-            //remove in production
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
-            $numAffected = 0;
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $numAffected;
+            }
         }
         return $numAffected;  
     }
@@ -278,9 +287,9 @@ class ProductDao {
     /**
      * deletes entity from database.
      * @param entity the entity object to delete.
-     * @return number of rows affected.
+     * @return number of rows affected or -1 if error connection
      */
-    public function delete($id): int {
+    public function delete($id) {
         $numAffected = 0;
         try {
             //PDO object creation.
@@ -300,9 +309,11 @@ class ProductDao {
                 } 
             } 
         } catch (\PDOException $e) {
-            print "Error Code <br>".$e->getCode();
-            print "Error Message <br>".$e->getMessage();
-            print "Strack Trace <br>".nl2br($e->getTraceAsString());
+            if ($e->getCode() == 1045) {
+                return -1;
+            }else {
+                return $numAffected;
+            } 
         }   
 
         return $numAffected;

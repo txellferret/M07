@@ -16,6 +16,12 @@
 <!--list of users-->
 <?php
 $list = $params['list'] ?? null;
+$error = $params['error'] ?? null;
+if (!is_null($error)) {
+    echo <<<EOT
+    <div><p class="alert alert-danger">$error</p></div>
+EOT;
+}  
 if (isset($list)) {
     echo <<<EOT
         <table class="table table-sm table-bordered table-striped table-hover caption-top table-responsive-sm">
