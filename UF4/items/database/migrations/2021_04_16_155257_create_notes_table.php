@@ -17,7 +17,7 @@ class CreateNotesTable extends Migration
             $table->increments('id');
             $table->integer('item_id')->unsigned()->index();
             $table->text('content');
-            //$table->timestamps();
+            $table->timestamps();
         });
     }
 

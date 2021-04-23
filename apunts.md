@@ -206,16 +206,19 @@ La funcio Request() per obtenir les dades enviades en una petició.
 
 
 
+23.04.2021
+**TINKER**
+php artisan tinker
+DB::table('items')->insert(['title' =>'title01', 'content'=>'content01']);
+
+DB::table('items')->get(); //format json per obtenir totes les dades
+DB::table('items')->where('title', 'title02')->first();
 
 
 
 
 
-
-
-
-
-
+    
 
 
 

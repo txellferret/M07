@@ -27,11 +27,23 @@ class ItemController extends Controller
         $items = Item::all();  //using model.
         return view('item.list', compact('items'));
     }
+    /*
+    public function list() {
+        //$items = ['Item1', 'Item2', 'Item3'];  //using array with mock data
+        //$items = [];  //using empty array
+        $items = \DB::table('items')->get(); //using database
+        return view('item.list', compact('items'));
+    }
+    */
 
     public function find($id) {
         $item = Item::find($id);
         //return $item;
         return view('item.form', compact('item'));
+    }
+
+    public function addNote(Note $note) {
+        return $this->notes()->save($note);
     }
  
 }

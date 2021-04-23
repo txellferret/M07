@@ -15,10 +15,35 @@
         <input type="text" name="title" value="{{$item->title}}"/>
     </div>
     <div>
-        <label for="content">Title:</label>
+        <label for="content">Content:</label>
         <input type="text" name="content" value="{{$item->content}}"/>
     </div>
-</form>    
+    <ul>
+        @foreach($item->notes as $note)
+            <li>{{$note->content}}</li>
+        @endforeach
+    </ul>
+</form>  
+<hr/>
+<h3>Add a new note</h3>
+<form method="post" action="/items/{{$item->id}}/notes">
+    {{csrf->field()}}
+    <div class="form-group">
+        <textarea name="content" class="form-control">{{old('content')}}</textarea>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Add note</button>
+    </div>
+</form>
+ 
+@if (count($errors))
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{$error}}</li>
+        @endforeach
+    </ul>
+@endif
+ 
 @endif
  
 @endsection

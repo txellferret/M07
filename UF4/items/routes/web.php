@@ -38,3 +38,30 @@ Route::get('/items', [ItemController::class, 'index']);
 Route::get('/items/list', [ItemController::class, 'list']);
 
 Route::get('/items/{item}', [ItemController::class, 'find']);
+Route::post('/items/{item}/notes', 'NoteController@store');
+Route::get('/notes/{note}/edit', 'NoteController@edit');
+Route::patch('/notes/{note}', 'NoteController@update');
+
+/*
+<?php
+     
+Route::group(['middleware' => ['web']], function () {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+ 
+    Route::get('/home', function () {
+        return view('welcome');
+    });
+ 
+    Route::get('/items', 'ItemController@index');
+    Route::get('/items/list', 'ItemController@list');
+    Route::get('/items/find/{id}', 'ItemController@find');
+ 
+    Route::post('/items/{item}/notes', 'NoteController@store');
+    Route::get('/notes/{note}/edit', 'NoteController@edit');
+    Route::patch('/notes/{note}', 'NoteController@update');
+ 
+});
+
+*/
