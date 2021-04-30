@@ -17,7 +17,7 @@ class CreateItemsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('content');
-            $table->timestamps();
+            //$table->timestamps();
         });
     }
 

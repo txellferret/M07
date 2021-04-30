@@ -5,36 +5,46 @@
 @if(empty($item))
     <p>No item found!</p>
 @else
-<form>
+<h3>Details for item with id {{$item->id}} </h3>
+<form method="post" action="/items/{{$item->id}}/update">
+{{ csrf_field() }}
     <div>
         <label for="id">Id:</label>
-        <input type="text" name="id" value="{{$item->id}}"/>
+        <input type="text" name="id" value="{{$item->id}}" readonly/>
     </div>
     <div>
         <label for="title">Title:</label>
-        <input type="text" name="title" value="{{$item->title}}"/>
+        <input type="text" name="title" value="{{$item->title}}" required/>
     </div>
     <div>
         <label for="content">Content:</label>
-        <input type="text" name="content" value="{{$item->content}}"/>
+        <input type="text" name="content" value="{{$item->content}}" required/>
     </div>
-    <ul>
-        @foreach($item->notes as $note)
-            <li>{{$note->content}}</li>
-        @endforeach
-    </ul>
+    <button type="submit" class="btn btn-success">Update item</button>
+    <br/>
+    <br/>
+    <div>
+    <label for="notes">Notes attached:</label>
+        <ul>
+            @foreach($item->notes as $note)
+                <li>{{$note->content}}</li>
+            @endforeach
+        </ul>
+    </div>
+    
 </form>  
 <hr/>
-<h3>Add a new note</h3>
+<h6>Add a new note</h6>
 <form method="post" action="/items/{{$item->id}}/notes">
-    {{csrf->field()}}
+{{ csrf_field() }}
     <div class="form-group">
-        <textarea name="content" class="form-control">{{old('content')}}</textarea>
+        <textarea name="content" class="form-control" required></textarea>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Add note</button>
     </div>
 </form>
+
  
 @if (count($errors))
     <ul>

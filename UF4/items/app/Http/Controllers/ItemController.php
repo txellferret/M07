@@ -6,35 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Item;
- 
-class ItemController extends Controller
-{
+use App\Models\Note;
+class ItemController extends Controller {
     public function index() {
         //return 'Item page';
         return view('item.index');
     }
-    /*
     public function list() {
-        $items = ['Item1', 'Item2', 'Item3'];
-        //$items = [];
-        return view('item.list', compact('items'));
+        $data['items']  = Item::all();  //using model.
+        return view('item.list', compact('data'));
     }
-*/
-    public function list() {
-        //$items = ['Item1', 'Item2', 'Item3'];  //using array with mock data
-        //$items = [];  //using empty array
-        //$items = DB::table('items')->get(); //using database
-        $items = Item::all();  //using model.
-        return view('item.list', compact('items'));
-    }
-    /*
-    public function list() {
-        //$items = ['Item1', 'Item2', 'Item3'];  //using array with mock data
-        //$items = [];  //using empty array
-        $items = \DB::table('items')->get(); //using database
-        return view('item.list', compact('items'));
-    }
-    */
+    
 
     public function find($id) {
         $item = Item::find($id);
@@ -45,6 +27,55 @@ class ItemController extends Controller
     public function addNote(Note $note) {
         return $this->notes()->save($note);
     }
+
+    public function delete($id) {
+
+        try{
+            $item = Item::find($id);
+            $item->delete();
+            $data['items'] = Item::all();  //using model.
+            return view('item.list', compact('data'));
+
+        } catch(\Illuminate\Database\QueryException $ex){ 
+            $data['msg'] = "error deleting item";
+            $data['items'] = Item::all();  
+            return view('item.list', compact('data'));
+        }
+    }
+
+    public function addForm(){
+        return view('item.addform');
+    }
+
+    public function store (Request $request) {
+        try{
+            $item = new Item;
+            $item->title = $request->title;
+            $item->content = $request->content;
+            $item->save();
+            $data['items'] = Item::all();  
+            return view('item.list', compact('data'));
+        } catch(\Illuminate\Database\QueryException $ex){ 
+            $data['msg'] = "Error creating item";  
+            return view('item.addform', compact('data'));
+        }
+        
+    }
+
+    public function update(Request $request, Item $item) {
+        try{
+            $item->title = $request->title;
+            $item->content = $request->content;
+            $item->save();
+            $data['items']  = Item::all();  //using model.
+            return view('item.list', compact('data'));
+        } catch(\Illuminate\Database\QueryException $ex){ 
+            $data['msg'] = "error updating item";
+            $data['items'] = Item::all();  
+            return view('item.list', compact('data'));
+        }
+     }
+    
  
 }
 

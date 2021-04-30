@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\ItemController;
+use \App\Http\Controllers\NoteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,47 +22,18 @@ Route::get('/home', function () {
     return view('welcome');
 });
 
-/*
-Route::get('/items', function () {
-    return view('item.index');
-});
-
-Route::get('/items/list', function () {
-    $items = ['Item1', 'Item2', 'Item3'];
-    //$items = [];  //to test for empty list.
-    return view('item.list', compact('items'));
-});
-*/
 
 //per a laravel versió 8
-Route::get('/items', [ItemController::class, 'index']);
 Route::get('/items/list', [ItemController::class, 'list']);
-
 Route::get('/items/{item}', [ItemController::class, 'find']);
-Route::post('/items/{item}/notes', 'NoteController@store');
-Route::get('/notes/{note}/edit', 'NoteController@edit');
-Route::patch('/notes/{note}', 'NoteController@update');
+Route::post('/items/{item}/delete', [ItemController::class, 'delete']);
+Route::post('/items/{item}/notes', [NoteController::class, 'store']);
+Route::get('/itemform', [ItemController::class, 'addForm']);
+Route::post('/items/{item}/update', [ItemController::class, 'update']);
+Route::post('/additem', [ItemController::class, 'store']);
 
-/*
-<?php
-     
-Route::group(['middleware' => ['web']], function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
- 
-    Route::get('/home', function () {
-        return view('welcome');
-    });
- 
-    Route::get('/items', 'ItemController@index');
-    Route::get('/items/list', 'ItemController@list');
-    Route::get('/items/find/{id}', 'ItemController@find');
- 
-    Route::post('/items/{item}/notes', 'NoteController@store');
-    Route::get('/notes/{note}/edit', 'NoteController@edit');
-    Route::patch('/notes/{note}', 'NoteController@update');
- 
-});
+Route::get('/notes/list', [NoteController::class, 'list']);
+Route::post('/notes/{note}/update', [NoteController::class, 'update']);
+Route::post('/notes/{note}/delete', [NoteController::class, 'delete']);
+Route::get('/notes/{note}', [NoteController::class, 'find']);
 
-*/

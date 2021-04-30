@@ -6,11 +6,11 @@
     <p>No note found!</p>
 @else
 <hr/>
-<h3>Edit a note</h3>
-<form method="post" action="/notes/{{$note->id}}">
-   {{method->field('patch')}}
+<h3>Edit a note with id {{$note->id}}</h3>
+<form method="post" action="/notes/{{$note->id}}/update">
+    {{csrf_field()}}
     <div class="form-group">
-        <textarea name="content" class="form-control"></textarea>
+        <textarea name="content" class="form-control" required>{{$note->content}}</textarea>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Update note</button>
@@ -19,4 +19,4 @@
  
 @endif
  
-@endsection
+@endsection 
