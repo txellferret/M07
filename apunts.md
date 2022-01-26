@@ -1,5 +1,8 @@
 M07
 wiki Jose: https://docencia.proven.cat/jmoreno/wiki/doku.php?id=docencia:dawbi:m07:uf4:laravel
+user: student
+pass: proven
+
 22/09
 https es el protocol d'intercanvi de informació, HTTPS vol dir que es segur. La infomració va xifrada. 
 http no es segur. La informació va amb text pla.
